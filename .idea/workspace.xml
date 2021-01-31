@@ -42,6 +42,11 @@
     <property name="cf.first.check.clang-format" value="false" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\filip\OneDrive\Desktop\NESpp\src\cpu\register" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
@@ -68,7 +73,7 @@
       <option name="presentableId" value="Default" />
       <updated>1612110437189</updated>
       <workItem from="1612110439075" duration="65000" />
-      <workItem from="1612110554427" duration="2382000" />
+      <workItem from="1612110554427" duration="9780000" />
     </task>
     <servers />
   </component>
@@ -80,9 +85,13 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="414" y="180" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.-150.1728.1128/0.0.1920.1050@0.0.1920.1050" timestamp="1612110489029" />
-    <state x="297" y="442" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1612111587597">
+    <state x="297" y="442" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1612122710942">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="297" y="442" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/1920.-150.1728.1128/0.0.1920.1050@0.0.1920.1050" timestamp="1612111587597" />
+    <state x="297" y="442" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/1920.-150.1728.1128/0.0.1920.1050@0.0.1920.1050" timestamp="1612122710942" />
+    <state x="143" y="233" width="672" height="678" key="search.everywhere.popup" timestamp="1612122737697">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="143" y="233" width="672" height="678" key="search.everywhere.popup/1920.-150.1728.1128/0.0.1920.1050@0.0.1920.1050" timestamp="1612122737697" />
   </component>
 </project>
