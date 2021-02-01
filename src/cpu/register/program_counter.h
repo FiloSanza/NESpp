@@ -5,6 +5,7 @@
 
 namespace nespp {
     class ProgramCounter : public Register<uint16_t> {
+    public:
         void inc();
         void jump(uint16_t offset);
     };

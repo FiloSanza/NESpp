@@ -16,7 +16,7 @@ namespace nespp {
 
         Register<T>() = delete;
 
-        Register<T>(std::string name);
+        explicit Register<T>(std::string name);
 
     protected:
         T value;

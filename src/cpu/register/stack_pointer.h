@@ -8,6 +8,8 @@ namespace nespp {
 
     class StackPointer : public Register<uint16_t> {
     public:
+        StackPointer();
+
         void inc();
         void dec();
     };

@@ -3,7 +3,7 @@
 namespace nespp {
 
     template<typename T>
-    Register<T>::Register(std::string name) : name{name}, value(0) {}
+    Register<T>::Register(std::string name) : name{std::move(name)}, value(0) {}
 
     template<typename T>
     T Register<T>::get_value() {
@@ -16,8 +16,8 @@ namespace nespp {
     }
 
     template<typename T>
-    void Register<T>::set_value(T value) {
-        this->value = value;
+    void Register<T>::set_value(T val) {
+        value = val;
     }
 
 }
