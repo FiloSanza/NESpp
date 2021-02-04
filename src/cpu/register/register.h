@@ -2,13 +2,14 @@
 #define NESPP_REGISTER_H
 
 #include <string>
+#include <bitset>
 
 namespace nespp {
 
     template<typename T>
     class Register {
     public:
-        void set_value(T value);
+        virtual void set_value(T value);
 
         T get_value();
 

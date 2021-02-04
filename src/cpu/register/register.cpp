@@ -1,4 +1,5 @@
 #include "register.h"
+#include "program_status.h"
 
 namespace nespp {
 
@@ -20,4 +21,7 @@ namespace nespp {
         value = val;
     }
 
+    template class Register<uint8_t>;
+    template class Register<uint16_t>;
+    template class Register<std::bitset<FLAG_NUM>>;
 }

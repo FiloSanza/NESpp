@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include "register.h"
+#include "../../utils/bits.h"
 
 namespace nespp {
 
@@ -12,6 +13,8 @@ namespace nespp {
 
         void inc();
         void dec();
+
+        void set_value(uint16_t value) override;
     };
 
 }

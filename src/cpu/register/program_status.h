@@ -1,16 +1,12 @@
-//
-// Created by filip on 31/01/2021.
-//
-
 #ifndef NESPP_PROGRAM_STATUS_H
 #define NESPP_PROGRAM_STATUS_H
 
 #include "register.h"
 #include <bitset>
 
-constexpr int FLAG_NUM = 7;
-
 namespace nespp {
+
+    constexpr int FLAG_NUM = 8;
 
     enum Flags {
         Carry = 0,
@@ -22,8 +18,10 @@ namespace nespp {
         Negative = 6
     };
 
-    class ProgramStatus : public Register<std::bitset<FLAG_NUM>>{
+    class ProgramStatus : public Register<std::bitset<FLAG_NUM>> {
     public:
+        ProgramStatus();
+
         bool is_carry_set();
         bool is_zero_set();
         bool is_interrupt_set();
