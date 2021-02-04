@@ -9,5 +9,8 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 # 'test1.cpp tests2.cpp' are source files with tests
 #add_executable(googletest_run test1.cpp tests2.cpp)
 
-add_executable(googletest_run)
+add_executable(googletest_run
+        cpu/handlers/transfer_opcode_handlers_tests.cpp
+)
+
 target_link_libraries(googletest_run gtest gtest_main)
