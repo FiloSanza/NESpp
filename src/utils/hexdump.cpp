@@ -1,11 +1,11 @@
 #include "hexdump.h"
 
-namespace nespp {
-    void Hexdump::dump(std::string& description, const void* addr, const int len) {
+namespace nespp::hexdump {
+    void dump(std::string& description, const void* addr, const int len) {
         dump(description, addr, len, stdout);
     }
 
-    void Hexdump::dump(std::string& description, const void* addr, const int len, FILE* file) {
+    void dump(std::string& description, const void* addr, const int len, FILE* file) {
         const auto* mem_ptr = (const uint8_t*)addr;
 
         fprintf(file, "Start at %p\n", addr);

@@ -8,14 +8,10 @@
 #include <stdio.h>
 #include <ctype.h>
 
-namespace nespp {
+namespace nespp::hexdump {
 
-    class Hexdump {
-    public:
-        Hexdump() = delete;
-        static void dump(std::string& description, const void* addr, int len);
-        static void dump(std::string& description, const void* addr, int len, FILE* file);
-    };
+    void dump(std::string& description, const void* addr, int len);
+    void dump(std::string& description, const void* addr, int len, FILE* file);
 
 }
 
