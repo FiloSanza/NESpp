@@ -4909,7 +4909,6 @@ int UnitTest::Run() {
           0x0,                                    // Clear the following flags:
           _WRITE_ABORT_MSG | _CALL_REPORTFAULT);  // pop-up window, core dump.
 # endif
-
     // In debug mode, the Windows CRT can crash with an assertion over invalid
     // input (e.g. passing an invalid file descriptor).  The default handling
     // for these assertions is to pop up a dialog and wait for user input.
