@@ -36,11 +36,11 @@ import sys
 SCRIPT_DIR = os.path.dirname(__file__) or '.'
 
 # isdir resolves symbolic links.
-gtest_tests_util_dir = os.path.join(SCRIPT_DIR, '../../googletest/test')
+gtest_tests_util_dir = os.path.join(SCRIPT_DIR, '../../tests/test')
 if os.path.isdir(gtest_tests_util_dir):
   GTEST_TESTS_UTIL_DIR = gtest_tests_util_dir
 else:
-  GTEST_TESTS_UTIL_DIR = os.path.join(SCRIPT_DIR, '../../googletest/test')
+  GTEST_TESTS_UTIL_DIR = os.path.join(SCRIPT_DIR, '../../tests/test')
 sys.path.append(GTEST_TESTS_UTIL_DIR)
 
 # pylint: disable=C6204

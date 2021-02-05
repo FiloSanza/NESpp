@@ -176,7 +176,7 @@ if __name__ == '__main__':
     golden_file = open(GOLDEN_PATH, 'wb')
     golden_file.write(output)
     golden_file.close()
-    # Suppress the error "googletest was imported but a call to its main()
+    # Suppress the error "tests was imported but a call to its main()
     # was never detected."
     os._exit(0)
   else:

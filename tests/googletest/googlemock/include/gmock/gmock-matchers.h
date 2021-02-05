@@ -34,7 +34,7 @@
 // matchers can be defined by the user implementing the
 // MatcherInterface<T> interface if necessary.
 //
-// See googletest/include/gtest/gtest-matchers.h for the definition of class
+// See tests/include/gtest/gtest-matchers.h for the definition of class
 // Matcher, class MatcherInterface, and others.
 
 // GOOGLETEST_CM0002 DO NOT DELETE

@@ -278,7 +278,7 @@
 # define GTEST_FLAG_PREFIX_DASH_ "gtest-"
 # define GTEST_FLAG_PREFIX_UPPER_ "GTEST_"
 # define GTEST_NAME_ "Google Test"
-# define GTEST_PROJECT_URL_ "https://github.com/google/googletest/"
+# define GTEST_PROJECT_URL_ "https://github.com/google/tests/"
 #endif  // !defined(GTEST_DEV_EMAIL_)
 
 #if !defined(GTEST_INIT_GOOGLE_TEST_NAME_)
@@ -2210,7 +2210,7 @@ const char* StringFromGTestEnv(const char* flag, const char* default_val);
 
 #if !defined(GTEST_INTERNAL_DEPRECATED)
 
-// Internal Macro to mark an API deprecated, for googletest usage only
+// Internal Macro to mark an API deprecated, for tests usage only
 // Usage: class GTEST_INTERNAL_DEPRECATED(message) MyClass or
 // GTEST_INTERNAL_DEPRECATED(message) <return_type> myFunction(); Every usage of
 // a deprecated entity will trigger a warning when compiled with

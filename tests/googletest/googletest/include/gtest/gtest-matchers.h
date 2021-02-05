@@ -33,8 +33,8 @@
 // EXPECT_DEATH and friends to accept a matcher argument.
 
 // IWYU pragma: private, include "testing/base/public/gunit.h"
-// IWYU pragma: friend third_party/googletest/googlemock/.*
-// IWYU pragma: friend third_party/googletest/googletest/.*
+// IWYU pragma: friend third_party/tests/googlemock/.*
+// IWYU pragma: friend third_party/tests/tests/.*
 
 #ifndef GTEST_INCLUDE_GTEST_GTEST_MATCHERS_H_
 #define GTEST_INCLUDE_GTEST_GTEST_MATCHERS_H_
