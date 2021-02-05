@@ -9,10 +9,16 @@ namespace nespp {
     }
 
     void Memory::set_u8(uint16_t address, uint8_t value) {
+        for(auto &f : callback_on_write)
+            f(address, memory[address]);
+
         memory[address] = value;
     }
 
     uint8_t Memory::get_u8(uint16_t address) {
+        for(auto &f : callback_on_read)
+            f(address, memory[address]);
+
         return memory[address];
     }
 
@@ -35,6 +41,15 @@ namespace nespp {
     void Memory::reset_callbacks() {
         callback_on_read.clear();
         callback_on_write.clear();
+    }
+
+    void Memory::load(const std::vector<uint8_t>& data, uint16_t address) {
+        //TODO: use std::format when available
+        if(address + data.size() >= memory.size())
+            throw std::out_of_range("Error trying to load " + std::to_string(data.size()) + " bytes at " + std::to_string(address) + " to memory, memory size is " + std::to_string(memory.size()));
+
+        for(size_t i=0; i<data.size(); i++)
+            set_u8(i + address, data[i]);
     }
 
 }

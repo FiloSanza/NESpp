@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstdint>
 #include <functional>
+#include <stdexcept>
 
 namespace nespp {
 
@@ -13,8 +14,9 @@ namespace nespp {
     class Memory {
     public:
         Memory();
-        void set_u8(uint16_t address, uint8_t value);
+        void load(const std::vector<uint8_t>& data, uint16_t address);
 
+        void set_u8(uint16_t address, uint8_t value);
         uint8_t get_u8(uint16_t address);
 
         void add_callback_on_write(const std::function<void(uint16_t, uint8_t)>& callback);

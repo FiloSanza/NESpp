@@ -2,6 +2,10 @@
 
 namespace nespp {
 
+    ProgramCounter::ProgramCounter() : Register<uint16_t>("PC") {
+
+    }
+
     void ProgramCounter::inc() {
         value++;
     }

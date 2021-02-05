@@ -1,1 +1,20 @@
 #include "opcode_handlers.h"
+
+namespace nespp {
+
+    OpcodeHandlers::OpcodeHandlers() {
+        handlers.merge(transfer_opcodes::get_handlers());
+    }
+
+    void OpcodeHandlers::handle_opcode(Cpu &cpu, uint8_t opcode) {
+        auto handler = handlers.find(opcode);
+
+        if(handler == handlers.end())
+            throw std::domain_error("Opcode " + std::to_string(opcode) + " handler not found.");
+
+        handler->second(cpu);
+    }
+
+}
+
+

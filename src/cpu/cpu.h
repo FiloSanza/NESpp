@@ -2,6 +2,8 @@
 #define NESPP_CPU_H
 
 #include <memory>
+#include <iostream>
+#include <iomanip>
 #include "memory/memory.h"
 #include "memory/stack.h"
 #include "register/stack_pointer.h"
@@ -10,7 +12,10 @@
 #include "register/program_status.h"
 
 namespace nespp {
+
     constexpr uint16_t PROGRAM_COUNTER_START = 0x600;
+
+    class OpcodeHandlers;
 
     class Cpu {
     public:
@@ -32,6 +37,7 @@ namespace nespp {
         Memory& get_memory();
         Stack& get_stack();
 
+        void dump();
     private:
         std::unique_ptr<Memory> memory;
         std::unique_ptr<Stack> stack;

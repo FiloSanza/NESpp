@@ -22,9 +22,8 @@ namespace nespp::transfer_opcodes {
 
         if(!update_flags) return;
 
-        auto ps = cpu.get_program_status();
-        ps.set_negative(utils::get_nth_bit(value, 7));
-        ps.set_zero(value == 0);
+        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+        cpu.get_program_status().set_zero(value == 0);
     }
 
     void tax(Cpu &cpu) {

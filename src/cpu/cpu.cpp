@@ -2,6 +2,24 @@
 
 namespace nespp {
 
+    Cpu::Cpu(std::vector<uint8_t> &rom, uint16_t load_at) {
+        pc = std::make_unique<ProgramCounter>();
+        ps = std::make_unique<ProgramStatus>();
+        sp = std::make_unique<StackPointer>();
+        a = std::make_unique<Register<uint8_t>>("A");
+        x = std::make_unique<Register<uint8_t>>("X");
+        y = std::make_unique<Register<uint8_t>>("Y");
+        memory = std::make_unique<Memory>();
+        stack = std::make_unique<Stack>(*sp, *memory);
+
+        memory->load(rom, load_at);
+
+        cycle_count = 0;
+        rom_size = rom.size();
+        rom_address = load_at;
+        pc->set_value(rom_address);
+    }
+
     uint64_t Cpu::get_cycle_count() const {
         return cycle_count;
     }
@@ -46,7 +64,7 @@ namespace nespp {
         //uint16_t casts to avoid overflows
         auto low = (uint16_t)get_u8();
         auto high = (uint16_t)get_u8();
-        uint16_t value = high << 8 | low;
+        uint16_t value = high << 8u | low;
 
         return value;
     }
@@ -55,6 +73,20 @@ namespace nespp {
         uint8_t value = memory->get_u8(pc->get_value());
         pc->inc();
         return value;
+    }
+
+    void Cpu::dump() {
+        std::cerr << ps->get_name() << "\n";
+        std::cerr << ps->get_value().to_string() << "\n";
+        std::cerr << pc->get_name() << "\n";
+        std::cerr << "0x" << std::hex << std::setfill('0') << std::setw(4) << pc->get_value() << "\n";
+        std::cerr << a->get_name() << "\n";
+        std::cerr << "0x" << std::hex << std::setfill('0') << std::setw(4) << (int)a->get_value() << "\n";
+        std::cerr << x->get_name() << "\n";
+        std::cerr << "0x" << std::hex << std::setfill('0') << std::setw(4) << (int)x->get_value() << "\n";
+        std::cerr << y->get_name() << "\n";
+        std::cerr << "0x" << std::hex << std::setfill('0') << std::setw(4) << (int)y->get_value() << "\n";
+        std::cerr << std::endl;
     }
 
 }
