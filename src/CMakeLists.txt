@@ -31,7 +31,7 @@ set(SOURCE_FILES
     cpu/machine.cpp
     cpu/handlers/store_opcodes_handlers.cpp
     cpu/handlers/flag_opcodes_handlers.cpp
-)
+        cpu/handlers/bitwise_opcodes_handler.cpp cpu/handlers/bitwise_opcodes_handler.h)
 
 if (DEFINED SOURCE_FILES)
     add_library(
