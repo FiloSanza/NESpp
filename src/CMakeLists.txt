@@ -12,6 +12,9 @@ set(HEADER_FILES
     cpu/handlers/opcode_handlers.h
     cpu/handlers/transfer_opcodes_handlers.h
     utils/bits.h
+    cpu/machine.h
+    cpu/handlers/flag_opcodes_handlers.h
+    cpu/handlers/store_opcodes_handlers.h
 )
 
 set(SOURCE_FILES
@@ -25,7 +28,10 @@ set(SOURCE_FILES
     cpu/handlers/opcode_handlers.cpp
     cpu/handlers/transfer_opcodes_handlers.cpp
     utils/hexdump.cpp
-        cpu/machine.cpp cpu/machine.h cpu/handlers/store_opcodes_handlers.cpp cpu/handlers/store_opcodes_handlers.h)
+    cpu/machine.cpp
+    cpu/handlers/store_opcodes_handlers.cpp
+    cpu/handlers/flag_opcodes_handlers.cpp
+)
 
 if (DEFINED SOURCE_FILES)
     add_library(
