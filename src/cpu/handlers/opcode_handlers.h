@@ -3,6 +3,7 @@
 
 #include "../cpu.h"
 #include "transfer_opcodes_handlers.h"
+#include "store_opcodes_handlers.h"
 #include <map>
 #include <functional>
 #include <stdexcept>

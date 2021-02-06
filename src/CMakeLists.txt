@@ -25,7 +25,7 @@ set(SOURCE_FILES
     cpu/handlers/opcode_handlers.cpp
     cpu/handlers/transfer_opcodes_handlers.cpp
     utils/hexdump.cpp
-        cpu/machine.cpp cpu/machine.h)
+        cpu/machine.cpp cpu/machine.h cpu/handlers/store_opcodes_handlers.cpp cpu/handlers/store_opcodes_handlers.h)
 
 if (DEFINED SOURCE_FILES)
     add_library(
