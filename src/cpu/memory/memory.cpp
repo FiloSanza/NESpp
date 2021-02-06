@@ -8,13 +8,15 @@ namespace nespp {
         callback_on_read = {};
     }
 
+    //TODO: add out of memory checks + tests
     void Memory::set_u8(uint16_t address, uint8_t value) {
         for(auto &f : callback_on_write)
-            f(address, memory[address]);
+            f(address, value);
 
         memory[address] = value;
     }
 
+    //TODO: add out of memory checks + tests
     uint8_t Memory::get_u8(uint16_t address) {
         for(auto &f : callback_on_read)
             f(address, memory[address]);
@@ -64,6 +66,29 @@ namespace nespp {
         uint16_t address = page;
         address = address << 8u | offset;
         return address;
+    }
+
+    void Memory::set_u16(uint16_t address, uint16_t value) {
+        uint8_t low = value & 0xff;
+        uint8_t high = (value >> 8) & 0xff;
+
+        set_u8(address, low);
+        set_u8(address + 1, high);
+    }
+
+    uint16_t Memory::get_u16(uint16_t address) {
+        uint16_t value = get_u8(address + 1);
+        value = (value << 8u) | get_u8(address);
+
+        return value;
+    }
+
+    void Memory::set_u16_from_page(uint8_t page, uint8_t offset, uint16_t value) {
+        set_u16(get_page_address(page, offset), value);
+    }
+
+    uint16_t Memory::get_u16_from_page(uint8_t page, uint8_t offset) {
+        return get_u16(get_page_address(page, offset));
     }
 
 }

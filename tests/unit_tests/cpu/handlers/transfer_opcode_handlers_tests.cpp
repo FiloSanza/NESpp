@@ -351,3 +351,5 @@ namespace nespp::tests {
     }
 
 }
+
+#pragma clang diagnostic pop

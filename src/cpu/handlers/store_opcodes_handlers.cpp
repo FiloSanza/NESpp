@@ -16,35 +16,46 @@ namespace nespp::store_opcodes {
         return handlers;
     }
 
-    void sta(Cpu &cpu, Register<uint8_t> &reg) {
-
+    void sta(Cpu &cpu, Register<uint8_t> &reg, uint16_t address) {
+        cpu.get_memory().set_u8(address, reg.get_value());
     }
 
     void sta_zero(Cpu &cpu) {
-
+        uint16_t address = cpu.get_u8();
+        sta(cpu, cpu.get_a(), address);
     }
 
     void sta_zero_x(Cpu &cpu) {
-
+        uint16_t address = cpu.get_u8() + cpu.get_x().get_value();
+        address &= 0xffu;
+        sta(cpu, cpu.get_a(), address);
     }
 
     void sta_absolute(Cpu &cpu) {
-
+        uint16_t address = cpu.get_u16();
+        sta(cpu, cpu.get_a(), address);
     }
 
     void sta_absolute_x(Cpu &cpu) {
-
+        uint16_t address = cpu.get_u16() + cpu.get_x().get_value();
+        sta(cpu, cpu.get_a(), address);
     }
 
     void sta_absolute_y(Cpu &cpu) {
-
+        uint16_t address = cpu.get_u16() + cpu.get_y().get_value();
+        sta(cpu, cpu.get_a(), address);
     }
 
     void sta_indirect_x(Cpu &cpu) {
-
+        uint16_t indirect_address = cpu.get_u8() + cpu.get_x().get_value();
+        indirect_address &= 0xffu;
+        uint16_t address = cpu.get_memory().get_u16(indirect_address);
+        sta(cpu, cpu.get_a(), address);
     }
 
     void sta_indirect_y(Cpu &cpu) {
-
+        uint16_t indirect_address = cpu.get_u8();
+        uint16_t address = cpu.get_memory().get_u16(indirect_address) + cpu.get_y().get_value();
+        sta(cpu, cpu.get_a(), address);
     }
 }

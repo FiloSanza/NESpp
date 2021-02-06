@@ -19,8 +19,14 @@ namespace nespp {
         void set_u8(uint16_t address, uint8_t value);
         uint8_t get_u8(uint16_t address);
 
+        void set_u16(uint16_t address, uint16_t value);
+        uint16_t get_u16(uint16_t address);
+
         void set_u8_from_page(uint8_t page, uint8_t offset, uint8_t value);
         uint8_t get_u8_from_page(uint8_t page, uint8_t offset);
+
+        void set_u16_from_page(uint8_t page, uint8_t offset, uint16_t value);
+        uint16_t get_u16_from_page(uint8_t page, uint8_t offset);
 
         void add_callback_on_write(const std::function<void(uint16_t, uint8_t)>& callback);
         void add_callback_on_read(const std::function<void(uint16_t, uint8_t)>& callback);
