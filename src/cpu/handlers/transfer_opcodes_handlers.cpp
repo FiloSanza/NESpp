@@ -16,7 +16,7 @@ namespace nespp::transfer_opcodes {
     }
 
     template <typename T, typename U>
-    void transfer(Cpu& cpu, Register<T> &source, Register<U> &dest, bool update_flags) {
+    void transfer(Cpu& cpu, Register<T> &dest, Register<U> &source, bool update_flags) {
         auto value = source.get_value();
         dest.set_value(value);
 
@@ -43,10 +43,10 @@ namespace nespp::transfer_opcodes {
     }
 
     void txs(nespp::Cpu &cpu) {
-        transfer(cpu, cpu.get_stack_pointer(), cpu.get_x(), false);
+        transfer(cpu, cpu.get_stack_pointer(), cpu.get_x(), true);
     }
 
     void tya(Cpu &cpu) {
-        transfer(cpu, cpu.get_y(), cpu.get_a(), true);
+        transfer(cpu, cpu.get_a(), cpu.get_y(), true);
     }
 }

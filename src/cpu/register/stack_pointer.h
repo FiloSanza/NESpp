@@ -7,14 +7,12 @@
 
 namespace nespp {
 
-    class StackPointer : public Register<uint16_t> {
+    class StackPointer : public Register<uint8_t> {
     public:
         StackPointer();
 
         void inc();
         void dec();
-
-        void set_value(uint16_t value) override;
     };
 
 }

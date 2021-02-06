@@ -7,12 +7,12 @@ namespace nespp {
     }
 
     void Stack::push(uint8_t value) {
-        memory.set_u8(sp.get_value(), value);
+        memory.set_u8_from_page(STACK_PAGE, sp.get_value(), value);
         sp.dec();                                       //the stack grows towards the low addresses
     }
 
     uint8_t Stack::pop() {
-        uint8_t value = memory.get_u8(sp.get_value());
+        uint8_t value = memory.get_u8_from_page(STACK_PAGE, sp.get_value());
         sp.inc();
         return value;
     }

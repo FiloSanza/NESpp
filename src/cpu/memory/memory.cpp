@@ -52,4 +52,18 @@ namespace nespp {
             set_u8(i + address, data[i]);
     }
 
+    void Memory::set_u8_from_page(uint8_t page, uint8_t offset, uint8_t value) {
+        set_u8(get_u8_from_page(page, offset), value);
+    }
+
+    uint8_t Memory::get_u8_from_page(uint8_t page, uint8_t offset) {
+        return get_u8(get_page_address(page, offset));
+    }
+
+    uint16_t Memory::get_page_address(uint8_t page, uint8_t offset) {
+        uint16_t address = page;
+        address = address << 8u | offset;
+        return address;
+    }
+
 }
