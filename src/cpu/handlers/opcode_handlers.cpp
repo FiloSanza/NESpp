@@ -5,6 +5,7 @@ namespace nespp {
     OpcodeHandlers::OpcodeHandlers() {
         handlers.merge(transfer_opcodes::get_handlers());
         handlers.merge(store_opcodes::get_handlers());
+        handlers.merge(flags_opcodes::get_handlers());
     }
 
     void OpcodeHandlers::handle_opcode(Cpu &cpu, uint8_t opcode) {
