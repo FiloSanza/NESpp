@@ -55,7 +55,7 @@ namespace nespp {
     }
 
     void Memory::set_u8_from_page(uint8_t page, uint8_t offset, uint8_t value) {
-        set_u8(get_u8_from_page(page, offset), value);
+        set_u8(get_page_address(page, offset), value);
     }
 
     uint8_t Memory::get_u8_from_page(uint8_t page, uint8_t offset) {

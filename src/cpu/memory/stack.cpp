@@ -12,8 +12,8 @@ namespace nespp {
     }
 
     uint8_t Stack::pop() {
-        uint8_t value = memory.get_u8_from_page(STACK_PAGE, sp.get_value());
         sp.inc();
+        uint8_t value = memory.get_u8_from_page(STACK_PAGE, sp.get_value());
         return value;
     }
 }
