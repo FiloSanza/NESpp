@@ -7,6 +7,7 @@
 #include "flag_opcodes_handlers.h"
 #include "bitwise_opcodes_handlers.h"
 #include "branch_opcodes_handlers.h"
+#include "stack_opcodes_handlers.h"
 #include <map>
 #include <functional>
 #include <stdexcept>
@@ -120,7 +121,7 @@ namespace nespp {
         ORA_IND_X   = 0x01,
         ORA_IND_Y   = 0x11,
         PHA         = 0x48,
-        PHP         = 0x04,
+        PHP         = 0x08,
         PLA         = 0x68,
         PLP         = 0x28,
         ROL_ACC     = 0x2a,

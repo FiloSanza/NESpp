@@ -8,6 +8,7 @@ namespace nespp {
         handlers.merge(flags_opcodes::get_handlers());
         handlers.merge(bitwise_opcodes::get_handlers());
         handlers.merge(branch_opcodes::get_handlers());
+        handlers.merge(stack_opcodes::get_handlers());
     }
 
     void OpcodeHandlers::handle_opcode(Cpu &cpu, uint8_t opcode) {
