@@ -75,6 +75,68 @@ namespace nespp {
         return value;
     }
 
+    uint16_t Cpu::get_zero_x_address() {
+        uint16_t address = get_u8() + x->get_value();
+        address &= 0xffu;
+        return address;
+    }
+
+    uint16_t Cpu::get_absolute_x_address() {
+        return get_u16() + x->get_value();
+    }
+
+    uint16_t Cpu::get_absolute_y_address() {
+        return get_u16() + y->get_value();
+    }
+
+    uint16_t Cpu::get_indirect_x_address() {
+        uint16_t indirect_address = get_u8() + x->get_value();
+        indirect_address &= 0xffu;
+        uint16_t address = memory->get_u16(indirect_address);
+        return address;
+    }
+
+    uint16_t Cpu::get_indirect_y_address() {
+        uint16_t indirect_address = get_u8();
+        uint16_t address = memory->get_u16(indirect_address) + y->get_value();
+        return address;
+    }
+
+    uint8_t Cpu::get_zero_value() {
+        auto address = get_u8();
+        return memory->get_u8(address);
+    }
+
+    uint8_t Cpu::get_zero_x_value() {
+        auto address = get_zero_x_address();
+        return memory->get_u8(address);
+    }
+
+    uint8_t Cpu::get_absolute_value() {
+        auto address = get_u16();
+        return memory->get_u8(address);
+    }
+
+    uint8_t Cpu::get_absolute_x_value() {
+        auto address = get_absolute_x_address();
+        return memory->get_u8(address);
+    }
+
+    uint8_t Cpu::get_absolute_y_value() {
+        auto address = get_absolute_y_address();
+        return memory->get_u8(address);
+    }
+
+    uint8_t Cpu::get_indirect_x_value() {
+        auto address = get_indirect_x_address();
+        return memory->get_u8(address);
+    }
+
+    uint8_t Cpu::get_indirect_y_value() {
+        auto address = get_indirect_y_address();
+        return memory->get_u8(address);
+    }
+
     void Cpu::dump() {
         std::cerr << ps->get_name() << "\n";
         std::cerr << ps->get_value().to_string() << "\n";

@@ -5,6 +5,7 @@
 #include "transfer_opcodes_handlers.h"
 #include "store_opcodes_handlers.h"
 #include "flag_opcodes_handlers.h"
+#include "bitwise_opcodes_handlers.h"
 #include <map>
 #include <functional>
 #include <stdexcept>

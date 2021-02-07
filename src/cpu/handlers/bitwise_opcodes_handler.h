@@ -1,8 +1,0 @@
-#ifndef NESPP_BITWISE_OPCODES_HANDLER_H
-#define NESPP_BITWISE_OPCODES_HANDLER_H
-
-namespace nespp::bitwise_opcodes {
-
-}
-
-#endif //NESPP_BITWISE_OPCODES_HANDLER_H

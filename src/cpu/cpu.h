@@ -25,6 +25,20 @@ namespace nespp {
         uint8_t get_u8();
         uint16_t get_u16();
 
+        uint16_t get_zero_x_address();
+        uint16_t get_absolute_x_address();
+        uint16_t get_absolute_y_address();
+        uint16_t get_indirect_x_address();
+        uint16_t get_indirect_y_address();
+
+        uint8_t get_zero_value();
+        uint8_t get_zero_x_value();
+        uint8_t get_absolute_value();
+        uint8_t get_absolute_x_value();
+        uint8_t get_absolute_y_value();
+        uint8_t get_indirect_x_value();
+        uint8_t get_indirect_y_value();
+
         [[nodiscard]] uint64_t get_cycle_count() const;
         void inc_cycle_count(uint64_t value);
 

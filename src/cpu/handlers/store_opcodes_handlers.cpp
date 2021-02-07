@@ -33,8 +33,7 @@ namespace nespp::store_opcodes {
     }
 
     void sta_zero_x(Cpu &cpu) {
-        uint16_t address = cpu.get_u8() + cpu.get_x().get_value();
-        address &= 0xffu;
+        auto address = cpu.get_zero_x_address();
         store(cpu, cpu.get_a(), address);
     }
 
@@ -44,25 +43,22 @@ namespace nespp::store_opcodes {
     }
 
     void sta_absolute_x(Cpu &cpu) {
-        uint16_t address = cpu.get_u16() + cpu.get_x().get_value();
+        uint16_t address = cpu.get_absolute_x_address();
         store(cpu, cpu.get_a(), address);
     }
 
     void sta_absolute_y(Cpu &cpu) {
-        uint16_t address = cpu.get_u16() + cpu.get_y().get_value();
+        uint16_t address = cpu.get_absolute_y_address();
         store(cpu, cpu.get_a(), address);
     }
 
     void sta_indirect_x(Cpu &cpu) {
-        uint16_t indirect_address = cpu.get_u8() + cpu.get_x().get_value();
-        indirect_address &= 0xffu;
-        uint16_t address = cpu.get_memory().get_u16(indirect_address);
+        auto address = cpu.get_indirect_x_address();
         store(cpu, cpu.get_a(), address);
     }
 
     void sta_indirect_y(Cpu &cpu) {
-        uint16_t indirect_address = cpu.get_u8();
-        uint16_t address = cpu.get_memory().get_u16(indirect_address) + cpu.get_y().get_value();
+        auto address = cpu.get_indirect_y_address();
         store(cpu, cpu.get_a(), address);
     }
 
