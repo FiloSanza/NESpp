@@ -1,0 +1,10 @@
+#ifndef NESPP_BRANCH_OPCODES_HANDLERS_H
+#define NESPP_BRANCH_OPCODES_HANDLERS_H
+
+
+class branch_opcodes_handlers {
+
+};
+
+
+#endif //NESPP_BRANCH_OPCODES_HANDLERS_H
