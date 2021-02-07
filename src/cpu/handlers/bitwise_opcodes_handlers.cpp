@@ -52,7 +52,7 @@ namespace nespp::bitwise_opcodes {
     }
 
     void and_zero_x(Cpu &cpu) {
-        uint8_t value = cpu.get_zero_x_address();
+        uint8_t value = cpu.get_zero_x_value();
         bitwise_and(cpu, cpu.get_a(), value);
     }
 
@@ -173,7 +173,7 @@ namespace nespp::bitwise_opcodes {
     }
 
     void ora_indirect_y(Cpu &cpu) {
-        uint8_t value = cpu.get_indirect_x_value();
+        uint8_t value = cpu.get_indirect_y_value();
         bitwise_ora(cpu, cpu.get_a(), value);
     }
 }
