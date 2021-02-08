@@ -13,6 +13,12 @@ namespace nespp::tests {
     constexpr uint8_t DEC_ABS_X  = 0xde;
     constexpr uint8_t DEX        = 0xca;
     constexpr uint8_t DEY        = 0x88;
+    constexpr uint8_t INC_ZERO   = 0xe6;
+    constexpr uint8_t INC_ZERO_X = 0xf6;
+    constexpr uint8_t INC_ABS    = 0xee;
+    constexpr uint8_t INC_ABS_X  = 0xfe;
+    constexpr uint8_t INX        = 0xe8;
+    constexpr uint8_t INY        = 0xc8;
 
     constexpr uint16_t LOAD_ADDR      = 0x200;
     constexpr uint16_t ZERO_PAGE_ADDR = 0x10;
@@ -322,6 +328,318 @@ namespace nespp::tests {
         machine.execute();
 
         --y_value;
+        EXPECT_EQ(machine.get_cpu().get_y().get_value(), y_value);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INC_ZERO) {
+        uint8_t memory_value = 0x10;
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {INC_ZERO, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        machine.get_cpu().get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+
+        machine.execute();
+
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(ZERO_PAGE_ADDR), memory_value + 1);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INC_ZERO_ZERO) {
+        uint8_t memory_value = -0x01;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+
+        std::vector<uint8_t> rom = {INC_ZERO, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        machine.get_cpu().get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+
+        machine.execute();
+
+        ++memory_value;
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INC_ZERO_NEGATIVE) {
+        uint8_t memory_value = -0x02;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Negative] = true;
+
+        std::vector<uint8_t> rom = {INC_ZERO, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        machine.get_cpu().get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+
+        machine.execute();
+
+        ++memory_value;
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INC_ZERO_X) {
+        uint8_t x_value = 0x04;
+        uint8_t memory_value = 0x10;
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {INC_ZERO_X, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        uint16_t address = (ZERO_PAGE_ADDR + x_value) & 0xff;
+        machine.get_cpu().get_x().set_value(x_value);
+        machine.get_cpu().get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(address), memory_value + 1);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INC_ZERO_X_ZERO) {
+        uint8_t x_value = 0x04;
+        uint8_t memory_value = -0x01;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+
+        std::vector<uint8_t> rom = {INC_ZERO_X, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        uint16_t address = (ZERO_PAGE_ADDR + x_value) & 0xff;
+        machine.get_cpu().get_x().set_value(x_value);
+        machine.get_cpu().get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        ++memory_value;
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INC_ZERO_X_NEGATIVE) {
+        uint8_t x_value = 0x04;
+        uint8_t memory_value = -0x02;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Negative] = true;
+
+        std::vector<uint8_t> rom = {INC_ZERO_X, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        uint16_t address = (ZERO_PAGE_ADDR + x_value) & 0xff;
+        machine.get_cpu().get_x().set_value(x_value);
+        machine.get_cpu().get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        ++memory_value;
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INC_ABS) {
+        uint8_t memory_value = 0x10;
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {INC_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        machine.get_cpu().get_memory().set_u8(ABS_ADDR, memory_value);
+
+        machine.execute();
+
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(ABS_ADDR), memory_value + 1);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INC_ABS_ZERO) {
+        uint8_t memory_value = -0x01;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+
+        std::vector<uint8_t> rom = {INC_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        machine.get_cpu().get_memory().set_u8(ABS_ADDR, memory_value);
+
+        machine.execute();
+
+        ++memory_value;
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(ABS_ADDR), memory_value);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INC_ABS_NEGATIVE) {
+        uint8_t memory_value = -0x02;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Negative] = true;
+
+        std::vector<uint8_t> rom = {INC_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        machine.get_cpu().get_memory().set_u8(ABS_ADDR, memory_value);
+
+        machine.execute();
+
+        ++memory_value;
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(ABS_ADDR), memory_value);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INC_ABS_X) {
+        uint8_t x_value = 0x04;
+        uint8_t memory_value = 0x10;
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {INC_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        uint16_t address = ABS_ADDR + x_value;
+        machine.get_cpu().get_x().set_value(x_value);
+        machine.get_cpu().get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(address), memory_value + 1);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INC_ABS_X_ZERO) {
+        uint8_t x_value = 0x04;
+        uint8_t memory_value = -0x01;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+
+        std::vector<uint8_t> rom = {INC_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        uint16_t address = ABS_ADDR + x_value;
+        machine.get_cpu().get_x().set_value(x_value);
+        machine.get_cpu().get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        ++memory_value;
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INC_ABS_X_NEGATIVE) {
+        uint8_t x_value = 0x04;
+        uint8_t memory_value = -0x02;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Negative] = true;
+
+        std::vector<uint8_t> rom = {INC_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        uint16_t address = ABS_ADDR + x_value;
+        machine.get_cpu().get_x().set_value(x_value);
+        machine.get_cpu().get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        ++memory_value;
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INX) {
+        uint8_t x_value = 0x10;
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {INX};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        machine.get_cpu().get_x().set_value(x_value);
+
+        machine.execute();
+
+        EXPECT_EQ(machine.get_cpu().get_x().get_value(), x_value + 1);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INX_ZERO) {
+        uint8_t x_value = -0x01;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+
+        std::vector<uint8_t> rom = {INX};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        machine.get_cpu().get_x().set_value(x_value);
+
+        machine.execute();
+
+        ++x_value;
+        EXPECT_EQ(machine.get_cpu().get_x().get_value(), x_value);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INX_NEGATIVE) {
+        uint8_t x_value = -0x02;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Negative] = true;
+
+        std::vector<uint8_t> rom = {INX};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        machine.get_cpu().get_x().set_value(x_value);
+
+        machine.execute();
+
+        ++x_value;
+        EXPECT_EQ(machine.get_cpu().get_x().get_value(), x_value);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INY) {
+        uint8_t y_value = 0x10;
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {INY};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        machine.get_cpu().get_y().set_value(y_value);
+
+        machine.execute();
+
+        EXPECT_EQ(machine.get_cpu().get_y().get_value(), y_value + 1);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INY_ZERO) {
+        uint8_t y_value = -0x01;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+
+        std::vector<uint8_t> rom = {INY};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        machine.get_cpu().get_y().set_value(y_value);
+
+        machine.execute();
+
+        ++y_value;
+        EXPECT_EQ(machine.get_cpu().get_y().get_value(), y_value);
+        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+    }
+
+    TEST(StoreOpcodeHandlers, INY_NEGATIVE) {
+        uint8_t y_value = -0x02;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Negative] = true;
+
+        std::vector<uint8_t> rom = {INY};
+        auto machine = Machine(rom, LOAD_ADDR);
+
+        machine.get_cpu().get_y().set_value(y_value);
+
+        machine.execute();
+
+        ++y_value;
         EXPECT_EQ(machine.get_cpu().get_y().get_value(), y_value);
         EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
     }

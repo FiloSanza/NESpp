@@ -12,6 +12,13 @@ namespace nespp::math_opcodes {
         handlers.emplace(Opcodes::DEX, dex);
         handlers.emplace(Opcodes::DEY, dey);
 
+        handlers.emplace(Opcodes::INC_ZERO, inc_zero);
+        handlers.emplace(Opcodes::INC_ZERO_X, inc_zero_x);
+        handlers.emplace(Opcodes::INC_ABS, inc_abs);
+        handlers.emplace(Opcodes::INC_ABS_X, inc_abs_x);
+        handlers.emplace(Opcodes::INX, inx);
+        handlers.emplace(Opcodes::INY, iny);
+
         return handlers;
     }
 
@@ -59,5 +66,51 @@ namespace nespp::math_opcodes {
 
     void dey(Cpu &cpu) {
         dec_register(cpu, cpu.get_y());
+    }
+
+    void inc_memory(Cpu &cpu, uint16_t address) {
+        auto &memory = cpu.get_memory();
+
+        uint8_t value = memory.get_u8(address);
+        memory.set_u8(address, ++value);
+
+        cpu.get_program_status().set_zero(value == 0);
+        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+    }
+
+    void inc_zero(Cpu &cpu) {
+        uint16_t address = cpu.get_u8();
+        inc_memory(cpu, address);
+    }
+
+    void inc_zero_x(Cpu &cpu) {
+        auto address = cpu.get_zero_x_address();
+        inc_memory(cpu, address);
+    }
+
+    void inc_abs(Cpu &cpu) {
+        auto address = cpu.get_u16();
+        inc_memory(cpu, address);
+    }
+
+    void inc_abs_x(Cpu &cpu) {
+        auto address = cpu.get_absolute_x_address();
+        inc_memory(cpu, address);
+    }
+
+    void inc_register(Cpu &cpu, Register<uint8_t> &reg) {
+        uint8_t value = reg.get_value();
+        reg.set_value(++value);
+
+        cpu.get_program_status().set_zero(value == 0);
+        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+    }
+
+    void inx(Cpu &cpu) {
+        inc_register(cpu, cpu.get_x());
+    }
+
+    void iny(Cpu &cpu) {
+        inc_register(cpu, cpu.get_y());
     }
 }

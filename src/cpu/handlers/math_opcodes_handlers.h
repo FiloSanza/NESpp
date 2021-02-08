@@ -21,6 +21,17 @@ namespace nespp::math_opcodes {
     void dex(Cpu &cpu);
     void dey(Cpu &cpu);
 
+    void inc_memory(Cpu &cpu, uint16_t address);
+
+    void inc_zero(Cpu &cpu);
+    void inc_zero_x(Cpu &cpu);
+    void inc_abs(Cpu &cpu);
+    void inc_abs_x(Cpu &cpu);
+
+    void inc_register(Cpu &cpu, Register<uint8_t> &reg);
+
+    void inx(Cpu &cpu);
+    void iny(Cpu &cpu);
 }
 
 
