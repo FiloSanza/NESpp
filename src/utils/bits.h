@@ -23,6 +23,21 @@ namespace nespp::utils {
         return bit != 0;
     }
 
+    uint8_t get_low_u8(uint16_t value) {
+        uint8_t result = value & 0xff;
+        return result;
+    }
+
+    uint8_t get_high_u8(uint16_t value) {
+        uint8_t result = (value >> 8u) & 0xff;
+        return result;
+    }
+
+    uint16_t merge_u8(uint8_t low, uint8_t high) {
+        uint16_t result = high;
+        result = (result << 8u) | low;
+        return result;
+    }
 }
 
 #endif //NESPP_BITS_H
