@@ -31,7 +31,7 @@ set(SOURCE_FILES
     cpu/machine.cpp
     cpu/handlers/store_opcodes_handlers.cpp
     cpu/handlers/flag_opcodes_handlers.cpp
-        cpu/handlers/bitwise_opcodes_handlers.cpp cpu/handlers/bitwise_opcodes_handlers.h cpu/handlers/branch_opcodes_handlers.cpp cpu/handlers/branch_opcodes_handlers.h cpu/handlers/stack_opcodes_handlers.cpp cpu/handlers/stack_opcodes_handlers.h cpu/handlers/compare_opcodes_handlers.cpp cpu/handlers/compare_opcodes_handlers.h)
+        cpu/handlers/bitwise_opcodes_handlers.cpp cpu/handlers/bitwise_opcodes_handlers.h cpu/handlers/branch_opcodes_handlers.cpp cpu/handlers/branch_opcodes_handlers.h cpu/handlers/stack_opcodes_handlers.cpp cpu/handlers/stack_opcodes_handlers.h cpu/handlers/compare_opcodes_handlers.cpp cpu/handlers/compare_opcodes_handlers.h cpu/handlers/math_opcodes_handlers.cpp cpu/handlers/math_opcodes_handlers.h)
 
 if (DEFINED SOURCE_FILES)
     add_library(
