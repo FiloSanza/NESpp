@@ -63,7 +63,8 @@ namespace nespp::tests {
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(ZERO_PAGE_ADDR), memory_value - 1);
+        --memory_value;
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
         EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
     }
 
@@ -110,7 +111,7 @@ namespace nespp::tests {
         auto flags = std::bitset<8>(0);
         flags[Flags::Negative] = true;
 
-        std::vector<uint8_t> rom = {DEC_ZERO, ZERO_PAGE_ADDR};
+        std::vector<uint8_t> rom = {DEC_ZERO_X, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
 
         uint16_t address = (ZERO_PAGE_ADDR + x_value) & 0xff;
@@ -119,7 +120,8 @@ namespace nespp::tests {
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(address), memory_value - 1);
+        --memory_value;
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(address), memory_value);
         EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
     }
 
@@ -166,7 +168,8 @@ namespace nespp::tests {
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(ABS_ADDR), memory_value - 1);
+        --memory_value;
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(ABS_ADDR), memory_value);
         EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
     }
 
@@ -222,7 +225,8 @@ namespace nespp::tests {
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(address), memory_value - 1);
+        --memory_value;
+        EXPECT_EQ(machine.get_cpu().get_memory().get_u8(address), memory_value);
         EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
     }
 
@@ -244,6 +248,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, DEX_ZERO) {
         uint8_t x_value = 0x01;
         auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
 
         std::vector<uint8_t> rom = {DEX};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -259,6 +264,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, DEX_NEGATIVE) {
         uint8_t x_value = 0x00;
         auto flags = std::bitset<8>(0);
+        flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {DEX};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -267,11 +273,12 @@ namespace nespp::tests {
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_x().get_value(), x_value - 1);
+        --x_value;
+        EXPECT_EQ(machine.get_cpu().get_x().get_value(), x_value);
         EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
     }
 
-    TEST(StoreOpcodeHandlers, DEY_ZERO) {
+    TEST(StoreOpcodeHandlers, DEY) {
         uint8_t y_value = 0x10;
         auto flags = std::bitset<8>(0);
 
@@ -286,9 +293,10 @@ namespace nespp::tests {
         EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
     }
 
-    TEST(StoreOpcodeHandlers, DEY_ZERO_ZERO) {
+    TEST(StoreOpcodeHandlers, DEY_ZERO) {
         uint8_t y_value = 0x01;
         auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
 
         std::vector<uint8_t> rom = {DEY};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -301,9 +309,10 @@ namespace nespp::tests {
         EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
     }
 
-    TEST(StoreOpcodeHandlers, DEY_ZERO_NEGATIVE) {
+    TEST(StoreOpcodeHandlers, DEY_NEGATIVE) {
         uint8_t y_value = 0x00;
         auto flags = std::bitset<8>(0);
+        flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {DEY};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -312,7 +321,8 @@ namespace nespp::tests {
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_y().get_value(), y_value - 1);
+        --y_value;
+        EXPECT_EQ(machine.get_cpu().get_y().get_value(), y_value);
         EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
     }
 

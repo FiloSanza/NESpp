@@ -9,6 +9,7 @@
 #include "branch_opcodes_handlers.h"
 #include "stack_opcodes_handlers.h"
 #include "compare_opcodes_handlers.h"
+#include "math_opcodes_handlers.h"
 #include <map>
 #include <functional>
 #include <stdexcept>
