@@ -3,7 +3,8 @@
 
 #include <map>
 #include <functional>
-#include "opcode_handlers.h"
+#include "opcodes.h"
+#include "../cpu.h"
 
 namespace nespp::math_opcodes {
 

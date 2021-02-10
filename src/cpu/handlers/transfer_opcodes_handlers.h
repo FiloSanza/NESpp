@@ -1,9 +1,9 @@
 #ifndef NESPP_TRANSFER_OPCODES_HANDLERS_H
 #define NESPP_TRANSFER_OPCODES_HANDLERS_H
 
-#include "../../utils/bits.h"
 #include "../register/register.h"
-#include "opcode_handlers.h"
+#include "opcodes.h"
+#include "../cpu.h"
 
 #include <map>
 #include <functional>

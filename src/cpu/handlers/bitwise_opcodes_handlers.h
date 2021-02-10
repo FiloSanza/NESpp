@@ -35,6 +35,24 @@ namespace nespp::bitwise_opcodes {
     void ora_absolute_y(Cpu &cpu);
     void ora_indirect_x(Cpu &cpu);
     void ora_indirect_y(Cpu &cpu);
+
+    void rol(Cpu &cpu, Register<uint8_t> &reg);
+    void rol(Cpu &cpu, uint16_t address);
+
+    void rol_acc(Cpu &cpu);
+    void rol_zero(Cpu &cpu);
+    void rol_zero_x(Cpu &cpu);
+    void rol_abs(Cpu &cpu);
+    void rol_abs_x(Cpu &cpu);
+
+    void ror(Cpu &cpu, Register<uint8_t> &reg);
+    void ror(Cpu &cpu, uint16_t address);
+
+    void ror_acc(Cpu &cpu);
+    void ror_zero(Cpu &cpu);
+    void ror_zero_x(Cpu &cpu);
+    void ror_abs(Cpu &cpu);
+    void ror_abs_x(Cpu &cpu);
 }
 
 #endif //NESPP_BITWISE_OPCODES_HANDLERS_H

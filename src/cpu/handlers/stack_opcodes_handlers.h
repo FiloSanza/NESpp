@@ -3,7 +3,8 @@
 
 #include <map>
 #include <functional>
-#include "opcode_handlers.h"
+#include "opcodes.h"
+#include "../cpu.h"
 
 namespace nespp::stack_opcodes {
     std::map<uint8_t, std::function<void(Cpu &)>> get_handlers();
