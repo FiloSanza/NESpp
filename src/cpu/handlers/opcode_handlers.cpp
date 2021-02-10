@@ -11,6 +11,7 @@ namespace nespp {
         handlers.merge(stack_opcodes::get_handlers());
         handlers.merge(compare_opcodes::get_handlers());
         handlers.merge(math_opcodes::get_handlers());
+        handlers.merge(jump_opcodes::get_handlers());
     }
 
     void OpcodeHandlers::handle_opcode(Cpu &cpu, uint8_t opcode) {

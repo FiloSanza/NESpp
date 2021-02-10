@@ -6,6 +6,7 @@ namespace nespp::system_opcodes {
         auto handlers =  std::map<uint8_t, std::function<void(Cpu &)>>();
 
         handlers.emplace(Opcodes::BRK, brk);
+        handlers.emplace(Opcodes::RTI, rti);
         handlers.emplace(Opcodes::NOP, nop);
 
         return handlers;
@@ -28,5 +29,15 @@ namespace nespp::system_opcodes {
 
         uint16_t new_pc = utils::merge_u8(low, high);
         cpu.get_program_counter().set_value(new_pc);
+    }
+
+    void rti(Cpu &cpu) {
+        auto ps = cpu.get_stack().pop();
+        cpu.get_program_status().set_value(ps);
+
+        auto pc_low = cpu.get_stack().pop();
+        auto pc_high = cpu.get_stack().pop();
+
+        cpu.get_program_counter().set_value(utils::merge_u8(pc_low, pc_high));
     }
 }

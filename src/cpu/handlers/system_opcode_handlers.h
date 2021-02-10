@@ -11,6 +11,7 @@ namespace nespp::system_opcodes {
 
     void nop(Cpu &cpu);
     void brk(Cpu &cpu);
+    void rti(Cpu &cpu);
 }
 
 
