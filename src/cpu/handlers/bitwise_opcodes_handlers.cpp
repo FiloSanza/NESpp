@@ -29,6 +29,16 @@ namespace nespp::bitwise_opcodes {
         handlers.emplace(Opcodes::ORA_ABS_Y, ora_absolute_y);
         handlers.emplace(Opcodes::ORA_IND_X, ora_indirect_x);
         handlers.emplace(Opcodes::ORA_IND_Y, ora_indirect_y);
+        handlers.emplace(Opcodes::ROL_ACC, rol_acc);
+        handlers.emplace(Opcodes::ROL_ZERO, rol_zero);
+        handlers.emplace(Opcodes::ROL_ZERO_X, rol_zero_x);
+        handlers.emplace(Opcodes::ROL_ABS, rol_abs);
+        handlers.emplace(Opcodes::ROL_ABS_X, rol_abs_x);
+        handlers.emplace(Opcodes::ROR_ACC, ror_acc);
+        handlers.emplace(Opcodes::ROR_ZERO, ror_zero);
+        handlers.emplace(Opcodes::ROR_ZERO_X, ror_zero_x);
+        handlers.emplace(Opcodes::ROR_ABS, ror_abs);
+        handlers.emplace(Opcodes::ROR_ABS_X, ror_abs_x);
 
         return handlers;
     }
@@ -176,4 +186,114 @@ namespace nespp::bitwise_opcodes {
         uint8_t value = cpu.get_indirect_y_value();
         bitwise_ora(cpu, cpu.get_a(), value);
     }
+
+    void rol(Cpu &cpu, Register<uint8_t> &reg) {
+        uint8_t value = reg.get_value();
+        bool carry = utils::get_nth_bit(value, 7);
+
+        value <<= 1u;
+        value = cpu.get_program_status().is_carry_set() ?
+                    utils::set_nth_bit(value, 0) :
+                    utils::clear_nth_bit(value, 0);
+        reg.set_value(value);
+
+        cpu.get_program_status().set_carry(carry);
+        cpu.get_program_status().set_zero(value == 0);
+        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+    }
+
+    void rol(Cpu &cpu, uint16_t address) {
+        uint8_t value = cpu.get_memory().get_u8(address);
+        bool carry = utils::get_nth_bit(value, 7);
+
+        value <<= 1u;
+        value = cpu.get_program_status().is_carry_set() ?
+                utils::set_nth_bit(value, 0) :
+                utils::clear_nth_bit(value, 0);
+
+        cpu.get_memory().set_u8(address, value);
+
+        cpu.get_program_status().set_carry(carry);
+        cpu.get_program_status().set_zero(value == 0);
+        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+    }
+
+    void rol_acc(Cpu &cpu) {
+        rol(cpu, cpu.get_a());
+    }
+
+    void rol_zero(Cpu &cpu) {
+        uint16_t address = cpu.get_u8();
+        rol(cpu, address);
+    }
+
+    void rol_zero_x(Cpu &cpu) {
+        auto address = cpu.get_zero_x_address();
+        rol(cpu, address);
+    }
+
+    void rol_abs(Cpu &cpu) {
+        auto address = cpu.get_u16();
+        rol(cpu, address);
+    }
+
+    void rol_abs_x(Cpu &cpu) {
+        auto address = cpu.get_absolute_x_address();
+        rol(cpu, address);
+    }
+
+    void ror(Cpu &cpu, Register<uint8_t> &reg) {
+        uint8_t value = reg.get_value();
+        bool carry = utils::get_nth_bit(value, 0);
+
+        value >>= 1u;
+        value = cpu.get_program_status().is_carry_set() ?
+                utils::set_nth_bit(value, 7) :
+                utils::clear_nth_bit(value, 7);
+        reg.set_value(value);
+
+        cpu.get_program_status().set_carry(carry);
+        cpu.get_program_status().set_zero(value == 0);
+        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+    }
+
+    void ror(Cpu &cpu, uint16_t address) {
+        uint8_t value = cpu.get_memory().get_u8(address);
+        bool carry = utils::get_nth_bit(value, 0);
+
+        value >>= 1u;
+        value = cpu.get_program_status().is_carry_set() ?
+                utils::set_nth_bit(value, 7) :
+                utils::clear_nth_bit(value, 7);
+        cpu.get_memory().set_u8(address, value);
+
+        cpu.get_program_status().set_carry(carry);
+        cpu.get_program_status().set_zero(value == 0);
+        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+    }
+
+    void ror_acc(Cpu &cpu) {
+        ror(cpu, cpu.get_a());
+    }
+
+    void ror_zero(Cpu &cpu) {
+        uint16_t address = cpu.get_u8();
+        ror(cpu, address);
+    }
+
+    void ror_zero_x(Cpu &cpu) {
+        auto address = cpu.get_zero_x_address();
+        ror(cpu, address);
+    }
+
+    void ror_abs(Cpu &cpu) {
+        auto address = cpu.get_u16();
+        ror(cpu, address);
+    }
+
+    void ror_abs_x(Cpu &cpu) {
+        auto address = cpu.get_absolute_x_address();
+        ror(cpu, address);
+    }
+
 }
