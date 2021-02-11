@@ -59,6 +59,24 @@ namespace nespp::bitwise_opcodes {
     void bit_zero(Cpu &cpu);
     void bit_absolute(Cpu &cpu);
 
+    void asl(Cpu &cpu, Register<uint8_t> &reg);
+    void asl(Cpu &cpu, uint16_t address);
+
+    void asl_accumulator(Cpu &cpu);
+    void asl_zero(Cpu &cpu);
+    void asl_zero_x(Cpu &cpu);
+    void asl_absolute(Cpu &cpu);
+    void asl_absolute_x(Cpu &cpu);
+
+    void lsr(Cpu &cpu, Register<uint8_t> &reg);
+    void lsr(Cpu &cpu, uint16_t address);
+
+    void lsr_accumulator(Cpu &cpu);
+    void lsr_zero(Cpu &cpu);
+    void lsr_zero_x(Cpu &cpu);
+    void lsr_absolute(Cpu &cpu);
+    void lsr_absolute_x(Cpu &cpu);
+
 }
 
 #endif //NESPP_BITWISE_OPCODES_HANDLERS_H
