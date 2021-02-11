@@ -33,6 +33,28 @@ namespace nespp::math_opcodes {
 
     void inx(Cpu &cpu);
     void iny(Cpu &cpu);
+
+    void adc(Cpu &cpu, Register<uint8_t> &reg, uint16_t value);
+
+    void adc_immediate(Cpu &cpu);
+    void adc_zero(Cpu &cpu);
+    void adc_zero_x(Cpu &cpu);
+    void adc_absolute(Cpu &cpu);
+    void adc_absolute_x(Cpu &cpu);
+    void adc_absolute_y(Cpu &cpu);
+    void adc_indirect_x(Cpu &cpu);
+    void adc_indirect_y(Cpu &cpu);
+
+    void sbc(Cpu &cpu, Register<uint8_t> &reg, uint16_t value);
+
+    void sbc_immediate(Cpu &cpu);
+    void sbc_zero(Cpu &cpu);
+    void sbc_zero_x(Cpu &cpu);
+    void sbc_absolute(Cpu &cpu);
+    void sbc_absolute_x(Cpu &cpu);
+    void sbc_absolute_y(Cpu &cpu);
+    void sbc_indirect_x(Cpu &cpu);
+    void sbc_indirect_y(Cpu &cpu);
 }
 
 

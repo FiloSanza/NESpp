@@ -19,6 +19,24 @@ namespace nespp::math_opcodes {
         handlers.emplace(Opcodes::INX, inx);
         handlers.emplace(Opcodes::INY, iny);
 
+        handlers.emplace(Opcodes::ADC_IMM, adc_immediate);
+        handlers.emplace(Opcodes::ADC_ZERO, adc_zero);
+        handlers.emplace(Opcodes::ADC_ZERO_X, adc_zero_x);
+        handlers.emplace(Opcodes::ADC_ABS, adc_absolute);
+        handlers.emplace(Opcodes::ADC_ABS_X, adc_absolute_x);
+        handlers.emplace(Opcodes::ADC_ABS_Y, adc_absolute_y);
+        handlers.emplace(Opcodes::ADC_IND_X, adc_indirect_x);
+        handlers.emplace(Opcodes::ADC_IND_Y, adc_indirect_y);
+
+        handlers.emplace(Opcodes::SBC_IMM, sbc_immediate);
+        handlers.emplace(Opcodes::SBC_ZERO, sbc_zero);
+        handlers.emplace(Opcodes::SBC_ZERO_X, sbc_zero_x);
+        handlers.emplace(Opcodes::SBC_ABS, sbc_absolute);
+        handlers.emplace(Opcodes::SBC_ABS_X, sbc_absolute_x);
+        handlers.emplace(Opcodes::SBC_ABS_Y, sbc_absolute_y);
+        handlers.emplace(Opcodes::SBC_IND_X, sbc_indirect_x);
+        handlers.emplace(Opcodes::SBC_IND_Y, sbc_indirect_y);
+
         return handlers;
     }
 
@@ -113,4 +131,110 @@ namespace nespp::math_opcodes {
     void iny(Cpu &cpu) {
         inc_register(cpu, cpu.get_y());
     }
+
+    void adc(Cpu &cpu, Register<uint8_t> &reg, uint16_t value) {
+        auto old_val = reg.get_value();
+        auto &ps = cpu.get_program_status();
+
+        uint16_t result = value + reg.get_value();
+        result += ps.is_carry_set();
+
+        reg.set_value(result & 0xffu);
+
+        //overflow happens when result's sign is wrong (value and old_val both positive but negative result and the opposite)
+        bool overflow = (value < 0x7f && old_val < 0x7f && reg.get_value() > 0x7f) ||
+                (value > 0x7f && old_val > 0x7f && reg.get_value() < 0x7f);
+
+        ps.set_carry(result >= 0x100);
+        ps.set_overflow(overflow);
+        ps.set_negative(utils::get_nth_bit(result, 7));
+
+    }
+
+    void adc_immediate(Cpu &cpu) {
+        auto value = cpu.get_u8();
+        adc(cpu, cpu.get_a(), value);
+    }
+
+    void adc_zero(Cpu &cpu) {
+        auto value = cpu.get_zero_value();
+        adc(cpu, cpu.get_a(), value);
+    }
+
+    void adc_zero_x(Cpu &cpu) {
+        auto value = cpu.get_zero_x_value();
+        adc(cpu, cpu.get_a(), value);
+    }
+
+    void adc_absolute(Cpu &cpu) {
+        auto value = cpu.get_absolute_value();
+        adc(cpu, cpu.get_a(), value);
+    }
+
+    void adc_absolute_x(Cpu &cpu) {
+        auto value = cpu.get_absolute_x_value();
+        adc(cpu, cpu.get_a(), value);
+    }
+
+    void adc_absolute_y(Cpu &cpu) {
+        auto value = cpu.get_absolute_y_value();
+        adc(cpu, cpu.get_a(), value);
+    }
+
+    void adc_indirect_x(Cpu &cpu) {
+        auto value = cpu.get_indirect_x_value();
+        adc(cpu, cpu.get_a(), value);
+    }
+
+    void adc_indirect_y(Cpu &cpu) {
+        auto value = cpu.get_indirect_y_value();
+        adc(cpu, cpu.get_a(), value);
+    }
+
+    void sbc(Cpu &cpu, Register<uint8_t> &reg, uint16_t value) {
+        //sbc can be simplified to adc of the two's complement of value
+        value = (value & 0xff) + (cpu.get_program_status().is_carry_set() ? 0 : 1);
+        adc(cpu, reg, value);
+    }
+
+    void sbc_immediate(Cpu &cpu) {
+        auto value = cpu.get_u8();
+        sbc(cpu, cpu.get_a(), value);
+    }
+
+    void sbc_zero(Cpu &cpu) {
+        auto value = cpu.get_zero_value();
+        sbc(cpu, cpu.get_a(), value);
+    }
+
+    void sbc_zero_x(Cpu &cpu) {
+        auto value = cpu.get_zero_x_value();
+        sbc(cpu, cpu.get_a(), value);
+    }
+
+    void sbc_absolute(Cpu &cpu) {
+        auto value = cpu.get_absolute_value();
+        sbc(cpu, cpu.get_a(), value);
+    }
+
+    void sbc_absolute_x(Cpu &cpu) {
+        auto value = cpu.get_absolute_x_value();
+        sbc(cpu, cpu.get_a(), value);
+    }
+
+    void sbc_absolute_y(Cpu &cpu) {
+        auto value = cpu.get_absolute_y_value();
+        sbc(cpu, cpu.get_a(), value);
+    }
+
+    void sbc_indirect_x(Cpu &cpu) {
+        auto value = cpu.get_indirect_x_value();
+        sbc(cpu, cpu.get_a(), value);
+    }
+
+    void sbc_indirect_y(Cpu &cpu) {
+        auto value = cpu.get_indirect_y_value();
+        sbc(cpu, cpu.get_a(), value);
+    }
+
 }
