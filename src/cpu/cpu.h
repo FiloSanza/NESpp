@@ -26,6 +26,7 @@ namespace nespp {
         uint16_t get_u16();
 
         uint16_t get_zero_x_address();
+        uint16_t get_zero_y_address();
         uint16_t get_absolute_x_address();
         uint16_t get_absolute_y_address();
         uint16_t get_indirect_x_address();
@@ -33,6 +34,7 @@ namespace nespp {
 
         uint8_t get_zero_value();
         uint8_t get_zero_x_value();
+        uint8_t get_zero_y_value();
         uint8_t get_absolute_value();
         uint8_t get_absolute_x_value();
         uint8_t get_absolute_y_value();

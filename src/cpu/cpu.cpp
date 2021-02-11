@@ -81,6 +81,12 @@ namespace nespp {
         return address;
     }
 
+    uint16_t Cpu::get_zero_y_address() {
+        uint16_t address = get_u8() + y->get_value();
+        address &= 0xffu;
+        return address;
+    }
+
     uint16_t Cpu::get_absolute_x_address() {
         return get_u16() + x->get_value();
     }
@@ -109,6 +115,11 @@ namespace nespp {
 
     uint8_t Cpu::get_zero_x_value() {
         auto address = get_zero_x_address();
+        return memory->get_u8(address);
+    }
+
+    uint8_t Cpu::get_zero_y_value() {
+        auto address = get_zero_y_address();
         return memory->get_u8(address);
     }
 
