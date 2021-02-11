@@ -10,6 +10,7 @@
 #include "stack_opcodes_handlers.h"
 #include "compare_opcodes_handlers.h"
 #include "math_opcodes_handlers.h"
+#include "load_opcodes_handlers.h"
 #include "jump_opcodes_handlers.h"
 #include "opcodes.h"
 #include <map>
