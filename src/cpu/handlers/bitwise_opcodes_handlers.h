@@ -53,6 +53,12 @@ namespace nespp::bitwise_opcodes {
     void ror_zero_x(Cpu &cpu);
     void ror_abs(Cpu &cpu);
     void ror_abs_x(Cpu &cpu);
+
+    void bit(Cpu &cpu, uint8_t value);
+
+    void bit_zero(Cpu &cpu);
+    void bit_absolute(Cpu &cpu);
+
 }
 
 #endif //NESPP_BITWISE_OPCODES_HANDLERS_H

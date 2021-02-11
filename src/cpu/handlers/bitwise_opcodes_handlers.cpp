@@ -39,6 +39,8 @@ namespace nespp::bitwise_opcodes {
         handlers.emplace(Opcodes::ROR_ZERO_X, ror_zero_x);
         handlers.emplace(Opcodes::ROR_ABS, ror_abs);
         handlers.emplace(Opcodes::ROR_ABS_X, ror_abs_x);
+        handlers.emplace(Opcodes::BIT_ABS, bit_absolute);
+        handlers.emplace(Opcodes::BIT_ZERO, bit_zero);
 
         return handlers;
     }
@@ -294,6 +296,25 @@ namespace nespp::bitwise_opcodes {
     void ror_abs_x(Cpu &cpu) {
         auto address = cpu.get_absolute_x_address();
         ror(cpu, address);
+    }
+
+    void bit(Cpu &cpu, uint8_t value) {
+        auto result = value & cpu.get_a().get_value();
+        auto &ps = cpu.get_program_status();
+
+        ps.set_zero(result == 0);
+        ps.set_overflow(utils::get_nth_bit(value, 6));
+        ps.set_negative(utils::get_nth_bit(value, 7));
+    }
+
+    void bit_absolute(Cpu &cpu) {
+        auto value = cpu.get_absolute_value();
+        bit(cpu, value);
+    }
+
+    void bit_zero(Cpu &cpu) {
+        auto value = cpu.get_zero_value();
+        bit(cpu, value);
     }
 
 }

@@ -41,6 +41,8 @@ namespace nespp::tests {
     constexpr uint8_t ROR_ZERO_X = 0x76;
     constexpr uint8_t ROR_ABS    = 0x6e;
     constexpr uint8_t ROR_ABS_X  = 0x7e;
+    constexpr uint8_t BIT_ZERO   = 0x24;
+    constexpr uint8_t BIT_ABS    = 0x2c;
 
     constexpr uint16_t LOAD_ADDR      = 0x200;
     constexpr uint16_t ZERO_PAGE_ADDR = 0x10;
@@ -2476,6 +2478,120 @@ namespace nespp::tests {
 
         memory_value >>= 1u;
         EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, BIT_ZERO_ZERO) {
+        uint8_t memory_value = 0x0f;
+        uint8_t a_value = 0xf0;
+
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+
+        std::vector<uint8_t> rom = {BIT_ZERO, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_a().set_value(a_value);
+        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+
+        machine.execute();
+
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, BIT_ZERO_NEGATIVE) {
+        uint8_t memory_value = 0x8f;
+        uint8_t a_value = 0x0f;
+
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Negative] = true;
+
+        std::vector<uint8_t> rom = {BIT_ZERO, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_a().set_value(a_value);
+        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+
+        machine.execute();
+
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, BIT_ZERO_OVERFLOW) {
+        uint8_t memory_value = 0x4f;
+        uint8_t a_value = 0x0f;
+
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Overflow] = true;
+
+        std::vector<uint8_t> rom = {BIT_ZERO, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_a().set_value(a_value);
+        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+
+        machine.execute();
+
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, BIT_ABS_ZERO) {
+        uint8_t memory_value = 0x0f;
+        uint8_t a_value = 0xf0;
+
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+
+        std::vector<uint8_t> rom = {BIT_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_a().set_value(a_value);
+        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
+
+        machine.execute();
+
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, BIT_ABS_NEGATIVE) {
+        uint8_t memory_value = 0x8f;
+        uint8_t a_value = 0x0f;
+
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Negative] = true;
+
+        std::vector<uint8_t> rom = {BIT_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_a().set_value(a_value);
+        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
+
+        machine.execute();
+
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, BIT_ABS_OVERFLOW) {
+        uint8_t memory_value = 0x4f;
+        uint8_t a_value = 0x0f;
+
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Overflow] = true;
+
+        std::vector<uint8_t> rom = {BIT_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_a().set_value(a_value);
+        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
+
+        machine.execute();
+
         EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
