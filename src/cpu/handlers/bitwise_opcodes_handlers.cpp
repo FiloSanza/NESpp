@@ -340,9 +340,10 @@ namespace nespp::bitwise_opcodes {
 
         ps.set_carry(utils::get_nth_bit(value, 7));
         ps.set_negative(utils::get_nth_bit(value, 6));
-        ps.set_zero(value == 0);
 
         value <<= 1;
+
+        ps.set_zero(value == 0);
         reg.set_value(value);
     }
 
@@ -352,9 +353,10 @@ namespace nespp::bitwise_opcodes {
 
         ps.set_carry(utils::get_nth_bit(value, 7));
         ps.set_negative(utils::get_nth_bit(value, 6));
-        ps.set_zero(value == 0);
 
         value <<= 1;
+
+        ps.set_zero(value == 0);
         cpu.get_memory().set_u8(address, value);
     }
 

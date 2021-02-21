@@ -41,6 +41,16 @@ namespace nespp::tests {
     constexpr uint8_t ROR_ZERO_X = 0x76;
     constexpr uint8_t ROR_ABS    = 0x6e;
     constexpr uint8_t ROR_ABS_X  = 0x7e;
+    constexpr uint8_t ASL_ACC    = 0x0A;
+    constexpr uint8_t ASL_ZERO   = 0x06;
+    constexpr uint8_t ASL_ZERO_X = 0x16;
+    constexpr uint8_t ASL_ABS    = 0x0e;
+    constexpr uint8_t ASL_ABS_X  = 0x1e;
+    constexpr uint8_t LSR_ACC    = 0x4a;
+    constexpr uint8_t LSR_ZERO   = 0x46;
+    constexpr uint8_t LSR_ZERO_X = 0x56;
+    constexpr uint8_t LSR_ABS    = 0x4e;
+    constexpr uint8_t LSR_ABS_X  = 0x5e;
     constexpr uint8_t BIT_ZERO   = 0x24;
     constexpr uint8_t BIT_ABS    = 0x2c;
 
@@ -2468,6 +2478,742 @@ namespace nespp::tests {
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {ROR_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        memory_value >>= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ACC) {
+        uint8_t a_value = 0x0f;
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {ASL_ACC};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_a().set_value(a_value);
+        cpu.get_program_status().set_carry(true);
+
+        machine.execute();
+
+        a_value <<= 1u;
+        EXPECT_EQ(cpu.get_a().get_value(), a_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ACC_CARRY) {
+        uint8_t a_value = 0x8f;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {ASL_ACC};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_a().set_value(a_value);
+
+        machine.execute();
+
+        a_value <<= 1u;
+        EXPECT_EQ(cpu.get_a().get_value(), a_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ACC_NEGATIVE) {
+        uint8_t a_value = 0x7f;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Negative] = true;
+
+        std::vector<uint8_t> rom = {ASL_ACC};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_a().set_value(a_value);
+
+        machine.execute();
+
+        a_value <<= 1u;
+        EXPECT_EQ(cpu.get_a().get_value(), a_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ACC_ZERO) {
+        uint8_t a_value = 0x80;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {ASL_ACC};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_a().set_value(a_value);
+
+        machine.execute();
+
+        a_value <<= 1u;
+        EXPECT_EQ(cpu.get_a().get_value(), a_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ZERO) {
+        uint8_t memory_value = 0x0f;
+
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {ASL_ZERO, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+        cpu.get_program_status().set_carry(true);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ZERO_CARRY) {
+        uint8_t memory_value = 0x8f;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {ASL_ZERO, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ZERO_NEGATIVE) {
+        uint8_t memory_value = 0x7f;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Negative] = true;
+
+        std::vector<uint8_t> rom = {ASL_ZERO, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ZERO_ZERO) {
+        uint8_t memory_value = 0x80;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {ASL_ZERO, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ZERO_X) {
+        uint8_t x_value = 0x10;
+        uint8_t memory_value = 0x0f;
+        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
+
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {ASL_ZERO_X, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+        cpu.get_program_status().set_carry(true);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ZERO_X_WRAP_AROUND) {
+        uint8_t x_value = 0xf5;
+        uint8_t memory_value = 0x0f;
+        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
+
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {ASL_ZERO_X, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+        cpu.get_program_status().set_carry(true);
+
+        machine.execute();
+
+        memory_value <<= 1u;    //carry is set
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ZERO_X_CARRY) {
+        uint8_t x_value = 0x10;
+        uint8_t memory_value = 0x8f;
+        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
+
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {ASL_ZERO_X, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ZERO_X_NEGATIVE) {
+        uint8_t x_value = 0x10;
+        uint8_t memory_value = 0x7f;
+        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
+
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Negative] = true;
+
+        std::vector<uint8_t> rom = {ASL_ZERO_X, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ZERO_X_ZERO) {
+        uint8_t x_value = 0x10;
+        uint8_t memory_value = 0x80;
+        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {ASL_ZERO_X, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ABS) {
+        uint8_t memory_value = 0x0f;
+
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {ASL_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
+        cpu.get_program_status().set_carry(true);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ABS_CARRY) {
+        uint8_t memory_value = 0x8f;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {ASL_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ABS_NEGATIVE) {
+        uint8_t memory_value = 0x7f;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Negative] = true;
+
+        std::vector<uint8_t> rom = {ASL_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ABS_ZERO) {
+        uint8_t memory_value = 0x80;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {ASL_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ABS_X) {
+        uint8_t x_value = 0x10;
+        uint8_t memory_value = 0x0f;
+        uint16_t address = x_value + ABS_ADDR;
+
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {ASL_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+        cpu.get_program_status().set_carry(true);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ABS_X_CARRY) {
+        uint8_t x_value = 0x10;
+        uint8_t memory_value = 0x8f;
+        uint16_t address = x_value + ABS_ADDR;
+
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {ASL_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ABS_X_NEGATIVE) {
+        uint8_t memory_value = 0x7f;
+        uint8_t x_value = 0x10;
+        uint16_t address = x_value + ABS_ADDR;
+
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Negative] = true;
+
+        std::vector<uint8_t> rom = {ASL_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, ASL_ABS_X_ZERO) {
+        uint8_t memory_value = 0x80;
+        uint8_t x_value = 0x10;
+        uint16_t address = x_value + ABS_ADDR;
+
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {ASL_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        memory_value <<= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ACC) {
+        uint8_t a_value = 0xf0;
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {LSR_ACC};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_a().set_value(a_value);
+
+        machine.execute();
+
+        a_value >>= 1u;
+        EXPECT_EQ(cpu.get_a().get_value(), a_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ACC_CARRY) {
+        uint8_t a_value = 0x0f;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {LSR_ACC};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_a().set_value(a_value);
+
+        machine.execute();
+
+        a_value >>= 1u;
+        EXPECT_EQ(cpu.get_a().get_value(), a_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ACC_ZERO) {
+        uint8_t a_value = 0x01;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {LSR_ACC};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_a().set_value(a_value);
+
+        machine.execute();
+
+        a_value >>= 1u;
+        EXPECT_EQ(cpu.get_a().get_value(), a_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ZERO) {
+        uint8_t memory_value = 0xf0;
+
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {LSR_ZERO, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+
+        machine.execute();
+
+        memory_value >>= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ZERO_CARRY) {
+        uint8_t memory_value = 0x0f;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {LSR_ZERO, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+
+        machine.execute();
+
+        memory_value >>= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ZERO_ZERO) {
+        uint8_t memory_value = 0x01;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {LSR_ZERO, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+
+        machine.execute();
+
+        memory_value >>= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ZERO_X) {
+        uint8_t x_value = 0x10;
+        uint8_t memory_value = 0xf0;
+        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
+
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {LSR_ZERO_X, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        memory_value >>= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ZERO_X_WRAP_AROUND) {
+        uint8_t x_value = 0xff;
+        uint8_t memory_value = 0xf0;
+        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
+
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {LSR_ZERO_X, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        memory_value >>= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ZERO_X_CARRY) {
+        uint8_t x_value = 0x10;
+        uint8_t memory_value = 0x0f;
+        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
+
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {LSR_ZERO_X, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        memory_value >>= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ZERO_X_ZERO) {
+        uint8_t x_value = 0x10;
+        uint8_t memory_value = 0x01;
+        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {LSR_ZERO_X, ZERO_PAGE_ADDR};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        memory_value >>= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ABS) {
+        uint8_t memory_value = 0xf0;
+
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {LSR_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
+
+        machine.execute();
+
+        memory_value >>= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ABS_CARRY) {
+        uint8_t memory_value = 0x0f;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {LSR_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
+
+        machine.execute();
+
+        memory_value >>= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ABS_ZERO) {
+        uint8_t memory_value = 0x01;
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {LSR_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
+
+        machine.execute();
+
+        memory_value >>= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ABS_X) {
+        uint8_t x_value = 0x10;
+        uint8_t memory_value = 0xf0;
+        uint16_t address = x_value + ABS_ADDR;
+
+        auto flags = std::bitset<8>(0);
+
+        std::vector<uint8_t> rom = {LSR_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        memory_value >>= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ABS_X_CARRY) {
+        uint8_t memory_value = 0x0f;
+        uint8_t x_value = 0x10;
+        uint16_t address = x_value + ABS_ADDR;
+
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {LSR_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
+        auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
+
+        cpu.get_x().set_value(x_value);
+        cpu.get_memory().set_u8(address, memory_value);
+
+        machine.execute();
+
+        memory_value >>= 1u;
+        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
+    }
+
+    TEST(BitwiseOpcodesHandlers, LSR_ABS_X_ZERO) {
+        uint8_t memory_value = 0x01;
+        uint8_t x_value = 0x10;
+        uint16_t address = x_value + ABS_ADDR;
+
+        auto flags = std::bitset<8>(0);
+        flags[Flags::Zero] = true;
+        flags[Flags::Carry] = true;
+
+        std::vector<uint8_t> rom = {LSR_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
         auto &cpu = machine.get_cpu();
 

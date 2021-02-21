@@ -145,6 +145,7 @@ namespace nespp::math_opcodes {
         bool overflow = (value < 0x7f && old_val < 0x7f && reg.get_value() > 0x7f) ||
                 (value > 0x7f && old_val > 0x7f && reg.get_value() < 0x7f);
 
+        ps.set_zero((result & 0xffu) == 0);
         ps.set_carry(result >= 0x100);
         ps.set_overflow(overflow);
         ps.set_negative(utils::get_nth_bit(result, 7));
@@ -193,7 +194,7 @@ namespace nespp::math_opcodes {
 
     void sbc(Cpu &cpu, Register<uint8_t> &reg, uint16_t value) {
         //sbc can be simplified to adc of the two's complement of value
-        value = (value & 0xff) + (cpu.get_program_status().is_carry_set() ? 0 : 1);
+        value = (value ^ 0xff) + (cpu.get_program_status().is_carry_set() ? 0 : 1);
         adc(cpu, reg, value);
     }
 
