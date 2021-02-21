@@ -23,10 +23,11 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {JMP_IND, low_value, high_value};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &pc = machine.get_cpu().get_program_counter();
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_program_counter().get_value(), value);
+        EXPECT_EQ(pc.get_value(), value);
     }
 
     TEST(JumpOpcodeHandlers, JMP_ABS) {
@@ -34,17 +35,19 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {JMP_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &pc = machine.get_cpu().get_program_counter();
 
         machine.get_cpu().get_memory().set_u16(ABS_ADDR, value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_program_counter().get_value(), value);
+        EXPECT_EQ(pc.get_value(), value);
     }
 
     TEST(JumpOpcodeHandlers, JSR) {
         std::vector<uint8_t> rom = {JSR, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &pc = machine.get_cpu().get_program_counter();
 
         machine.execute();
 
@@ -59,6 +62,7 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {JSR, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &pc = machine.get_cpu().get_program_counter();
 
         machine.get_cpu().get_memory().set_u16(ABS_ADDR, value);
         machine.get_cpu().get_memory().set_u8(value, RTS);
@@ -66,7 +70,7 @@ namespace nespp::tests {
         machine.execute();
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_program_counter().get_value(), LOAD_ADDR + 3);
+        EXPECT_EQ(pc.get_value(), LOAD_ADDR + 3);
     }
 
 }

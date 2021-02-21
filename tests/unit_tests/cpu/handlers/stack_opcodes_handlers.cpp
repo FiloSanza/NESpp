@@ -18,13 +18,14 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {PHA};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_value);
+        cpu.get_a().set_value(a_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_stack().pop(), a_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_stack().pop(), a_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(StackOpcodeHandlers, PHP) {
@@ -32,13 +33,14 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {PHP};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_program_status().set_value(flags);
+        cpu.get_program_status().set_value(flags);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_stack().pop(), flags);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_stack().pop(), flags);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(StackOpcodeHandlers, PLA) {
@@ -48,14 +50,15 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {PLA};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_temp_value);
-        machine.get_cpu().get_stack().push(a_value);
+        cpu.get_a().set_value(a_temp_value);
+        cpu.get_stack().push(a_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(StackOpcodeHandlers, PLA_ZERO) {
@@ -66,14 +69,15 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {PLA};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_temp_value);
-        machine.get_cpu().get_stack().push(a_value);
+        cpu.get_a().set_value(a_temp_value);
+        cpu.get_stack().push(a_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(StackOpcodeHandlers, PLA_NEGATIVE) {
@@ -84,14 +88,15 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {PLA};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_temp_value);
-        machine.get_cpu().get_stack().push(a_value);
+        cpu.get_a().set_value(a_temp_value);
+        cpu.get_stack().push(a_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(StackOpcodeHandlers, PLP) {
@@ -99,13 +104,15 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {PLP};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_stack().push((uint8_t)flags.to_ulong());
+        cpu.get_stack().push((uint8_t)flags.to_ulong());
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
 }
+
 #pragma clang diagnostic pop

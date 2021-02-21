@@ -67,14 +67,15 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {AND_IMM, immediate_value};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
+        cpu.get_a().set_value(a_value);
+        cpu.get_program_status().set_value(0);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & immediate_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value & immediate_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, AND_IMM_ZERO) {
@@ -85,14 +86,15 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {AND_IMM, immediate_value};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
+        cpu.get_a().set_value(a_value);
+        cpu.get_program_status().set_value(0);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & immediate_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value & immediate_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, AND_IMM_NEGATIVE) {
@@ -103,14 +105,15 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {AND_IMM, immediate_value};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
+        cpu.get_a().set_value(a_value);
+        cpu.get_program_status().set_value(0);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & immediate_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value & immediate_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, AND_ZERO) {
@@ -120,53 +123,16 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {AND_ZERO, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, AND_ZERO_ZERO) {
-        uint8_t a_value = 0x14;
-        uint8_t memory_value = 0x0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {AND_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+        cpu.get_a().set_value(a_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, AND_ZERO_NEGATIVE) {
-        uint8_t a_value = 0xf4;
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {AND_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value & memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, AND_ZERO_X) {
@@ -177,17 +143,18 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {AND_ZERO_X, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
         auto address = (ZERO_PAGE_ADDR + x_value) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
+        cpu.get_a().set_value(a_value);
+        cpu.get_x().set_value(x_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value & memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, AND_ZERO_X_WRAP_AROUND) {
@@ -198,61 +165,18 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {AND_ZERO_X, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
         auto address = (ZERO_PAGE_ADDR + x_value) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
+        cpu.get_a().set_value(a_value);
+        cpu.get_x().set_value(x_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, AND_ZERO_X_ZERO) {
-        uint8_t a_value = 0x14;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0x0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {AND_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = (ZERO_PAGE_ADDR + x_value) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, AND_ZERO_X_NEGATIVE) {
-        uint8_t a_value = 0xf4;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {AND_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = (ZERO_PAGE_ADDR + x_value) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value & memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, AND_ABS) {
@@ -262,53 +186,16 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {AND_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ABS_ADDR, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, AND_ABS_ZERO) {
-        uint8_t a_value = 0x14;
-        uint8_t memory_value = 0x0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {AND_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ABS_ADDR, memory_value);
+        cpu.get_a().set_value(a_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, AND_ABS_NEGATIVE) {
-        uint8_t a_value = 0xf4;
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {AND_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ABS_ADDR, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value & memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, AND_ABS_X) {
@@ -319,61 +206,18 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {AND_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
         auto address = ABS_ADDR + x_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
+        cpu.get_a().set_value(a_value);
+        cpu.get_x().set_value(x_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, AND_ABS_X_ZERO) {
-        uint8_t a_value = 0x14;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0x0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {AND_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = ABS_ADDR + x_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, AND_ABS_X_NEGATIVE) {
-        uint8_t a_value = 0xf4;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {AND_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = ABS_ADDR + x_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value & memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, AND_ABS_Y) {
@@ -384,61 +228,18 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {AND_ABS_Y, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
         auto address = ABS_ADDR + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
+        cpu.get_a().set_value(a_value);
+        cpu.get_y().set_value(y_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, AND_ABS_Y_ZERO) {
-        uint8_t a_value = 0x14;
-        uint8_t y_value = 0x30;
-        uint8_t memory_value = 0x0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {AND_ABS_Y, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = ABS_ADDR + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, AND_ABS_Y_NEGATIVE) {
-        uint8_t a_value = 0xf4;
-        uint8_t y_value = 0x30;
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {AND_ABS_Y, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = ABS_ADDR + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value & memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, AND_IND_X) {
@@ -451,68 +252,19 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {AND_IND_X, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
         auto address = (x_value + ZERO_PAGE_ADDR) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(address, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(indirect_addr, memory_value);
+        cpu.get_a().set_value(a_value);
+        cpu.get_x().set_value(x_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u16(address, indirect_addr);
+        cpu.get_memory().set_u8(indirect_addr, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, AND_IND_X_ZERO) {
-        uint8_t a_value = 0x14;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0x0;
-        uint16_t indirect_addr = 0x220;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {AND_IND_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = (x_value + ZERO_PAGE_ADDR) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(address, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(indirect_addr, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, AND_IND_X_NEGATIVE) {
-        uint8_t a_value = 0xf4;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0xf0;
-        uint16_t indirect_addr = 0x220;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {AND_IND_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = (x_value + ZERO_PAGE_ADDR) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(address, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(indirect_addr, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value & memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, AND_IND_Y) {
@@ -525,68 +277,19 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {AND_IND_Y, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
         auto address = indirect_addr + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(ZERO_PAGE_ADDR, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
+        cpu.get_a().set_value(a_value);
+        cpu.get_y().set_value(y_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u16(ZERO_PAGE_ADDR, indirect_addr);
+        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, AND_IND_Y_ZERO) {
-        uint8_t a_value = 0x14;
-        uint8_t y_value = 0x30;
-        uint8_t memory_value = 0x0;
-        uint16_t indirect_addr = 0x220;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {AND_IND_Y, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = indirect_addr + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(ZERO_PAGE_ADDR, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, AND_IND_Y_NEGATIVE) {
-        uint8_t a_value = 0xf4;
-        uint8_t y_value = 0x30;
-        uint8_t memory_value = 0xf0;
-        uint16_t indirect_addr = 0x220;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {AND_IND_Y, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = indirect_addr + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(ZERO_PAGE_ADDR, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value & memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value & memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, EOR_IMM) {
@@ -596,14 +299,15 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {EOR_IMM, immediate_value};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
+        cpu.get_a().set_value(a_value);
+        cpu.get_program_status().set_value(0);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ immediate_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value ^ immediate_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, EOR_IMM_ZERO) {
@@ -614,14 +318,15 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {EOR_IMM, immediate_value};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
+        cpu.get_a().set_value(a_value);
+        cpu.get_program_status().set_value(0);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ immediate_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value ^ immediate_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, EOR_IMM_NEGATIVE) {
@@ -632,14 +337,15 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {EOR_IMM, immediate_value};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
+        cpu.get_a().set_value(a_value);
+        cpu.get_program_status().set_value(0);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ immediate_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value ^ immediate_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, EOR_ZERO) {
@@ -649,53 +355,16 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {EOR_ZERO, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, EOR_ZERO_ZERO) {
-        uint8_t a_value = 0x14;
-        uint8_t memory_value = 0x14;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {EOR_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+        cpu.get_a().set_value(a_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, EOR_ZERO_NEGATIVE) {
-        uint8_t a_value = 0x14;
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {EOR_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value ^ memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, EOR_ZERO_X) {
@@ -706,17 +375,18 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {EOR_ZERO_X, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
         auto address = (ZERO_PAGE_ADDR + x_value) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
+        cpu.get_a().set_value(a_value);
+        cpu.get_x().set_value(x_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value ^ memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, EOR_ZERO_X_WRAP_AROUND) {
@@ -727,61 +397,18 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {EOR_ZERO_X, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
         auto address = (ZERO_PAGE_ADDR + x_value) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
+        cpu.get_a().set_value(a_value);
+        cpu.get_x().set_value(x_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, EOR_ZERO_X_ZERO) {
-        uint8_t a_value = 0x14;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0x14;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {EOR_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = (ZERO_PAGE_ADDR + x_value) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, EOR_ZERO_X_NEGATIVE) {
-        uint8_t a_value = 0x14;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {EOR_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = (ZERO_PAGE_ADDR + x_value) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value ^ memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, EOR_ABS) {
@@ -791,53 +418,16 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {EOR_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
+        auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ABS_ADDR, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, EOR_ABS_ZERO) {
-        uint8_t a_value = 0x14;
-        uint8_t memory_value = 0x14;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {EOR_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ABS_ADDR, memory_value);
+        cpu.get_a().set_value(a_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, EOR_ABS_NEGATIVE) {
-        uint8_t a_value = 0x14;
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {EOR_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ABS_ADDR, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value ^ memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, EOR_ABS_X) {
@@ -848,61 +438,18 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {EOR_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
-
+        auto &cpu = machine.get_cpu();
+        
         auto address = ABS_ADDR + x_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
+        cpu.get_a().set_value(a_value);
+        cpu.get_x().set_value(x_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, EOR_ABS_X_ZERO) {
-        uint8_t a_value = 0x14;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0x14;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {EOR_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = ABS_ADDR + x_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, EOR_ABS_X_NEGATIVE) {
-        uint8_t a_value = 0x14;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {EOR_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = ABS_ADDR + x_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value ^ memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, EOR_ABS_Y) {
@@ -913,61 +460,18 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {EOR_ABS_Y, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        auto address = ABS_ADDR + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, EOR_ABS_Y_ZERO) {
-        uint8_t a_value = 0x14;
-        uint8_t y_value = 0x30;
-        uint8_t memory_value = 0x14;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {EOR_ABS_Y, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = ABS_ADDR + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
+		auto address = ABS_ADDR + y_value;
+        cpu.get_a().set_value(a_value);
+        cpu.get_y().set_value(y_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, EOR_ABS_Y_NEGATIVE) {
-        uint8_t a_value = 0x14;
-        uint8_t y_value = 0x30;
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {EOR_ABS_Y, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = ABS_ADDR + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value ^ memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, EOR_IND_X) {
@@ -980,68 +484,19 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {EOR_IND_X, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        auto address = (x_value + ZERO_PAGE_ADDR) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(address, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(indirect_addr, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, EOR_IND_X_ZERO) {
-        uint8_t a_value = 0x14;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0x14;
-        uint16_t indirect_addr = 0x220;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {EOR_IND_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = (x_value + ZERO_PAGE_ADDR) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(address, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(indirect_addr, memory_value);
+		auto address = (x_value + ZERO_PAGE_ADDR) & 0xff;
+        cpu.get_a().set_value(a_value);
+        cpu.get_x().set_value(x_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u16(address, indirect_addr);
+        cpu.get_memory().set_u8(indirect_addr, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, EOR_IND_X_NEGATIVE) {
-        uint8_t a_value = 0x14;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0xf0;
-        uint16_t indirect_addr = 0x220;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {EOR_IND_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = (x_value + ZERO_PAGE_ADDR) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(address, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(indirect_addr, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value ^ memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, EOR_IND_Y) {
@@ -1054,68 +509,19 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {EOR_IND_Y, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        auto address = indirect_addr + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(ZERO_PAGE_ADDR, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, EOR_IND_Y_ZERO) {
-        uint8_t a_value = 0x14;
-        uint8_t y_value = 0x30;
-        uint8_t memory_value = 0x14;
-        uint16_t indirect_addr = 0x220;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {EOR_IND_Y, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = indirect_addr + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(ZERO_PAGE_ADDR, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
+		auto address = indirect_addr + y_value;
+        cpu.get_a().set_value(a_value);
+        cpu.get_y().set_value(y_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u16(ZERO_PAGE_ADDR, indirect_addr);
+        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, EOR_IND_Y_NEGATIVE) {
-        uint8_t a_value = 0x14;
-        uint8_t y_value = 0x30;
-        uint8_t memory_value = 0xf0;
-        uint16_t indirect_addr = 0x220;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {EOR_IND_Y, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = indirect_addr + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(ZERO_PAGE_ADDR, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value ^ memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value ^ memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, ORA_IMM) {
@@ -1125,50 +531,15 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {ORA_IMM, immediate_value};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | immediate_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_IMM_ZERO) {
-        uint8_t a_value = 0x00;
-        uint8_t immediate_value = 0x00;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {ORA_IMM, immediate_value};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
+		cpu.get_a().set_value(a_value);
+        cpu.get_program_status().set_value(0);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | immediate_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_IMM_NEGATIVE) {
-        uint8_t a_value = 0x14;
-        uint8_t immediate_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ORA_IMM, immediate_value};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | immediate_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value | immediate_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, ORA_ZERO) {
@@ -1178,53 +549,16 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {ORA_ZERO, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_ZERO_ZERO) {
-        uint8_t a_value = 0x00;
-        uint8_t memory_value = 0x00;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {ORA_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
+		cpu.get_a().set_value(a_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_ZERO_NEGATIVE) {
-        uint8_t a_value = 0x14;
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ORA_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value | memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, ORA_ZERO_X) {
@@ -1235,17 +569,18 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {ORA_ZERO_X, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        auto address = (ZERO_PAGE_ADDR + x_value) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
+		auto address = (ZERO_PAGE_ADDR + x_value) & 0xff;
+        cpu.get_a().set_value(a_value);
+        cpu.get_x().set_value(x_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value | memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, ORA_ZERO_X_WRAP_AROUND) {
@@ -1256,61 +591,18 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {ORA_ZERO_X, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        auto address = (ZERO_PAGE_ADDR + x_value) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_ZERO_X_ZERO) {
-        uint8_t a_value = 0x00;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0x00;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {ORA_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = (ZERO_PAGE_ADDR + x_value) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
+		auto address = (ZERO_PAGE_ADDR + x_value) & 0xff;
+        cpu.get_a().set_value(a_value);
+        cpu.get_x().set_value(x_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_ZERO_X_NEGATIVE) {
-        uint8_t a_value = 0x14;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ORA_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = (ZERO_PAGE_ADDR + x_value) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value | memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, ORA_ABS) {
@@ -1320,53 +612,16 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {ORA_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ABS_ADDR, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_ABS_ZERO) {
-        uint8_t a_value = 0x00;
-        uint8_t memory_value = 0x00;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {ORA_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ABS_ADDR, memory_value);
+		cpu.get_a().set_value(a_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_ABS_NEGATIVE) {
-        uint8_t a_value = 0x14;
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ORA_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(ABS_ADDR, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value | memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, ORA_ABS_X) {
@@ -1377,61 +632,18 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {ORA_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        auto address = ABS_ADDR + x_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_ABS_X_ZERO) {
-        uint8_t a_value = 0x00;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0x00;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {ORA_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = ABS_ADDR + x_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
+		auto address = ABS_ADDR + x_value;
+        cpu.get_a().set_value(a_value);
+        cpu.get_x().set_value(x_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_ABS_X_NEGATIVE) {
-        uint8_t a_value = 0x14;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ORA_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = ABS_ADDR + x_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value | memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, ORA_ABS_Y) {
@@ -1442,61 +654,18 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {ORA_ABS_Y, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        auto address = ABS_ADDR + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_ABS_Y_ZERO) {
-        uint8_t a_value = 0x00;
-        uint8_t y_value = 0x30;
-        uint8_t memory_value = 0x00;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {ORA_ABS_Y, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = ABS_ADDR + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
+		auto address = ABS_ADDR + y_value;
+        cpu.get_a().set_value(a_value);
+        cpu.get_y().set_value(y_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_ABS_Y_NEGATIVE) {
-        uint8_t a_value = 0x14;
-        uint8_t y_value = 0x30;
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ORA_ABS_Y, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = ABS_ADDR + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value | memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, ORA_IND_X) {
@@ -1509,68 +678,19 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {ORA_IND_X, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        auto address = (x_value + ZERO_PAGE_ADDR) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(address, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(indirect_addr, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_IND_X_ZERO) {
-        uint8_t a_value = 0x00;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0x00;
-        uint16_t indirect_addr = 0x220;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {ORA_IND_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = (x_value + ZERO_PAGE_ADDR) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(address, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(indirect_addr, memory_value);
+		auto address = (x_value + ZERO_PAGE_ADDR) & 0xff;
+        cpu.get_a().set_value(a_value);
+        cpu.get_x().set_value(x_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u16(address, indirect_addr);
+        cpu.get_memory().set_u8(indirect_addr, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_IND_X_NEGATIVE) {
-        uint8_t a_value = 0x14;
-        uint8_t x_value = 0x30;
-        uint8_t memory_value = 0xf0;
-        uint16_t indirect_addr = 0x220;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ORA_IND_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = (x_value + ZERO_PAGE_ADDR) & 0xff;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_x().set_value(x_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(address, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(indirect_addr, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value | memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, ORA_IND_Y) {
@@ -1583,68 +703,19 @@ namespace nespp::tests {
 
         std::vector<uint8_t> rom = {ORA_IND_Y, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &cpu = machine.get_cpu();
 
-        auto address = indirect_addr + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(ZERO_PAGE_ADDR, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_IND_Y_ZERO) {
-        uint8_t a_value = 0x00;
-        uint8_t y_value = 0x30;
-        uint8_t memory_value = 0x00;
-        uint16_t indirect_addr = 0x220;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-
-        std::vector<uint8_t> rom = {ORA_IND_Y, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = indirect_addr + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(ZERO_PAGE_ADDR, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
+		auto address = indirect_addr + y_value;
+        cpu.get_a().set_value(a_value);
+        cpu.get_y().set_value(y_value);
+        cpu.get_program_status().set_value(0);
+        cpu.get_memory().set_u16(ZERO_PAGE_ADDR, indirect_addr);
+        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ORA_IND_Y_NEGATIVE) {
-        uint8_t a_value = 0x14;
-        uint8_t y_value = 0x30;
-        uint8_t memory_value = 0xf0;
-        uint16_t indirect_addr = 0x220;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ORA_IND_Y, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-
-        auto address = indirect_addr + y_value;
-        machine.get_cpu().get_a().set_value(a_value);
-        machine.get_cpu().get_y().set_value(y_value);
-        machine.get_cpu().get_program_status().set_value(0);
-        machine.get_cpu().get_memory().set_u16(ZERO_PAGE_ADDR, indirect_addr);
-        machine.get_cpu().get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        EXPECT_EQ(machine.get_cpu().get_a().get_value(), a_value | memory_value);
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(cpu.get_a().get_value(), a_value | memory_value);
+        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
     TEST(BitwiseOpcodesHandlers, ROL_ACC) {
@@ -1739,61 +810,6 @@ namespace nespp::tests {
         EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
-    TEST(BitwiseOpcodesHandlers, ROL_ZERO_CARRY) {
-        uint8_t memory_value = 0x8f;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ROL_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROL_ZERO_NEGATIVE) {
-        uint8_t memory_value = 0b01111111;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ROL_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROL_ZERO_ZERO) {
-        uint8_t memory_value = 0b10000000;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ROL_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
     TEST(BitwiseOpcodesHandlers, ROL_ZERO_X) {
         uint8_t x_value = 0x10;
         uint8_t memory_value = 0x0f;
@@ -1838,72 +854,6 @@ namespace nespp::tests {
         EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
-    TEST(BitwiseOpcodesHandlers, ROL_ZERO_X_CARRY) {
-        uint8_t x_value = 0x10;
-        uint8_t memory_value = 0x8f;
-        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ROL_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROL_ZERO_X_NEGATIVE) {
-        uint8_t x_value = 0x10;
-        uint8_t memory_value = 0b01111111;
-        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ROL_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROL_ZERO_X_ZERO) {
-        uint8_t x_value = 0x10;
-        uint8_t memory_value = 0b10000000;
-        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ROL_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
     TEST(BitwiseOpcodesHandlers, ROL_ABS) {
         uint8_t memory_value = 0x0f;
 
@@ -1919,61 +869,6 @@ namespace nespp::tests {
         machine.execute();
 
         memory_value = (memory_value << 1u) | 1;    //carry is set
-        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROL_ABS_CARRY) {
-        uint8_t memory_value = 0x8f;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ROL_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROL_ABS_NEGATIVE) {
-        uint8_t memory_value = 0b01111111;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ROL_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROL_ABS_ZERO) {
-        uint8_t memory_value = 0b10000000;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ROL_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
         EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
         EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
@@ -1996,73 +891,6 @@ namespace nespp::tests {
         machine.execute();
 
         memory_value = (memory_value << 1u) | 1;    //carry is set
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROL_ABS_X_CARRY) {
-        uint8_t x_value = 0x10;
-        uint8_t memory_value = 0x8f;
-        uint16_t address = x_value + ABS_ADDR;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ROL_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROL_ABS_X_NEGATIVE) {
-        uint8_t memory_value = 0x7f;
-        uint8_t x_value = 0x10;
-        uint16_t address = x_value + ABS_ADDR;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ROL_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROL_ABS_X_ZERO) {
-        uint8_t memory_value = 0x80;
-        uint8_t x_value = 0x10;
-        uint16_t address = x_value + ABS_ADDR;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ROL_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
         EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
         EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
@@ -2159,63 +987,6 @@ namespace nespp::tests {
         EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
-    TEST(BitwiseOpcodesHandlers, ROR_ZERO_CARRY) {
-        uint8_t memory_value = 0x0f;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ROR_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROR_ZERO_NEGATIVE) {
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ROR_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-        cpu.get_program_status().set_carry(true);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        memory_value |= 0b10000000;
-        EXPECT_EQ(cpu.get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROR_ZERO_ZERO) {
-        uint8_t memory_value = 0x01;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ROR_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
     TEST(BitwiseOpcodesHandlers, ROR_ZERO_X) {
         uint8_t x_value = 0x10;
         uint8_t memory_value = 0xf0;
@@ -2258,135 +1029,10 @@ namespace nespp::tests {
         EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
-    TEST(BitwiseOpcodesHandlers, ROR_ZERO_X_CARRY) {
-        uint8_t x_value = 0x10;
-        uint8_t memory_value = 0x0f;
-        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ROR_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROR_ZERO_X_NEGATIVE) {
-        uint8_t x_value = 0x10;
-        uint8_t memory_value = 0xf0;
-        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ROR_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-        cpu.get_program_status().set_carry(true);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        memory_value |= 0b10000000;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROR_ZERO_X_ZERO) {
-        uint8_t x_value = 0x10;
-        uint8_t memory_value = 0x01;
-        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ROR_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
     TEST(BitwiseOpcodesHandlers, ROR_ABS) {
         uint8_t memory_value = 0xf0;
 
         auto flags = std::bitset<8>(0);
-
-        std::vector<uint8_t> rom = {ROR_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROR_ABS_CARRY) {
-        uint8_t memory_value = 0x0f;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ROR_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROR_ABS_NEGATIVE) {
-        uint8_t memory_value = 0xf0;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ROR_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
-        cpu.get_program_status().set_carry(true);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        memory_value |= 0b10000000;
-        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROR_ABS_ZERO) {
-        uint8_t memory_value = 0x01;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {ROR_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -2407,75 +1053,6 @@ namespace nespp::tests {
         uint16_t address = x_value + ABS_ADDR;
 
         auto flags = std::bitset<8>(0);
-
-        std::vector<uint8_t> rom = {ROR_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROR_ABS_X_CARRY) {
-        uint8_t memory_value = 0x0f;
-        uint8_t x_value = 0x10;
-        uint16_t address = x_value + ABS_ADDR;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ROR_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROR_ABS_X_NEGATIVE) {
-        uint8_t memory_value = 0xf0;
-        uint8_t x_value = 0x10;
-        uint16_t address = ABS_ADDR + x_value;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ROR_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-        cpu.get_program_status().set_carry(true);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        memory_value |= 0b10000000;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ROR_ABS_X_ZERO) {
-        uint8_t memory_value = 0x01;
-        uint8_t x_value = 0x10;
-        uint16_t address = x_value + ABS_ADDR;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {ROR_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -2583,61 +1160,6 @@ namespace nespp::tests {
         EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
-    TEST(BitwiseOpcodesHandlers, ASL_ZERO_CARRY) {
-        uint8_t memory_value = 0x8f;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ASL_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ASL_ZERO_NEGATIVE) {
-        uint8_t memory_value = 0x7f;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ASL_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ASL_ZERO_ZERO) {
-        uint8_t memory_value = 0x80;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ASL_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
     TEST(BitwiseOpcodesHandlers, ASL_ZERO_X) {
         uint8_t x_value = 0x10;
         uint8_t memory_value = 0x0f;
@@ -2682,72 +1204,6 @@ namespace nespp::tests {
         EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
-    TEST(BitwiseOpcodesHandlers, ASL_ZERO_X_CARRY) {
-        uint8_t x_value = 0x10;
-        uint8_t memory_value = 0x8f;
-        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ASL_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ASL_ZERO_X_NEGATIVE) {
-        uint8_t x_value = 0x10;
-        uint8_t memory_value = 0x7f;
-        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ASL_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ASL_ZERO_X_ZERO) {
-        uint8_t x_value = 0x10;
-        uint8_t memory_value = 0x80;
-        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ASL_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
     TEST(BitwiseOpcodesHandlers, ASL_ABS) {
         uint8_t memory_value = 0x0f;
 
@@ -2759,61 +1215,6 @@ namespace nespp::tests {
 
         cpu.get_memory().set_u8(ABS_ADDR, memory_value);
         cpu.get_program_status().set_carry(true);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ASL_ABS_CARRY) {
-        uint8_t memory_value = 0x8f;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ASL_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ASL_ABS_NEGATIVE) {
-        uint8_t memory_value = 0x7f;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ASL_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ASL_ABS_ZERO) {
-        uint8_t memory_value = 0x80;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ASL_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
 
         machine.execute();
 
@@ -2836,73 +1237,6 @@ namespace nespp::tests {
         cpu.get_x().set_value(x_value);
         cpu.get_memory().set_u8(address, memory_value);
         cpu.get_program_status().set_carry(true);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ASL_ABS_X_CARRY) {
-        uint8_t x_value = 0x10;
-        uint8_t memory_value = 0x8f;
-        uint16_t address = x_value + ABS_ADDR;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ASL_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ASL_ABS_X_NEGATIVE) {
-        uint8_t memory_value = 0x7f;
-        uint8_t x_value = 0x10;
-        uint16_t address = x_value + ABS_ADDR;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Negative] = true;
-
-        std::vector<uint8_t> rom = {ASL_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value <<= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, ASL_ABS_X_ZERO) {
-        uint8_t memory_value = 0x80;
-        uint8_t x_value = 0x10;
-        uint16_t address = x_value + ABS_ADDR;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {ASL_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
 
         machine.execute();
 
@@ -2983,43 +1317,6 @@ namespace nespp::tests {
         EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
-    TEST(BitwiseOpcodesHandlers, LSR_ZERO_CARRY) {
-        uint8_t memory_value = 0x0f;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {LSR_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ZERO_PAGE_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, LSR_ZERO_ZERO) {
-        uint8_t memory_value = 0x01;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {LSR_ZERO, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ZERO_PAGE_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
     TEST(BitwiseOpcodesHandlers, LSR_ZERO_X) {
         uint8_t x_value = 0x10;
         uint8_t memory_value = 0xf0;
@@ -3062,91 +1359,10 @@ namespace nespp::tests {
         EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 
-    TEST(BitwiseOpcodesHandlers, LSR_ZERO_X_CARRY) {
-        uint8_t x_value = 0x10;
-        uint8_t memory_value = 0x0f;
-        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {LSR_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, LSR_ZERO_X_ZERO) {
-        uint8_t x_value = 0x10;
-        uint8_t memory_value = 0x01;
-        uint16_t address = (x_value + ZERO_PAGE_ADDR) & 0xffu;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {LSR_ZERO_X, ZERO_PAGE_ADDR};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
     TEST(BitwiseOpcodesHandlers, LSR_ABS) {
         uint8_t memory_value = 0xf0;
 
         auto flags = std::bitset<8>(0);
-
-        std::vector<uint8_t> rom = {LSR_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, LSR_ABS_CARRY) {
-        uint8_t memory_value = 0x0f;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {LSR_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_memory().set_u8(ABS_ADDR, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(ABS_ADDR), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, LSR_ABS_ZERO) {
-        uint8_t memory_value = 0x01;
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {LSR_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -3167,51 +1383,6 @@ namespace nespp::tests {
         uint16_t address = x_value + ABS_ADDR;
 
         auto flags = std::bitset<8>(0);
-
-        std::vector<uint8_t> rom = {LSR_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, LSR_ABS_X_CARRY) {
-        uint8_t memory_value = 0x0f;
-        uint8_t x_value = 0x10;
-        uint16_t address = x_value + ABS_ADDR;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Carry] = true;
-
-        std::vector<uint8_t> rom = {LSR_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
-        auto machine = Machine(rom, LOAD_ADDR);
-        auto &cpu = machine.get_cpu();
-
-        cpu.get_x().set_value(x_value);
-        cpu.get_memory().set_u8(address, memory_value);
-
-        machine.execute();
-
-        memory_value >>= 1u;
-        EXPECT_EQ(cpu.get_memory().get_u8(address), memory_value);
-        EXPECT_EQ(cpu.get_program_status().get_value(), flags);
-    }
-
-    TEST(BitwiseOpcodesHandlers, LSR_ABS_X_ZERO) {
-        uint8_t memory_value = 0x01;
-        uint8_t x_value = 0x10;
-        uint16_t address = x_value + ABS_ADDR;
-
-        auto flags = std::bitset<8>(0);
-        flags[Flags::Zero] = true;
-        flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {LSR_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);

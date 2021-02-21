@@ -18,88 +18,95 @@ namespace nespp::tests {
     TEST(FlagOpcodeHandlers, SEC) {
         std::vector<uint8_t> rom = {SEC};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &ps = machine.get_cpu().get_program_status();
         auto flags = std::bitset<8>(0);
         flags[Flags::Carry] = true;
 
-        machine.get_cpu().get_program_status().set_value(0);
+        ps.set_value(0);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(ps.get_value(), flags);
     }
 
     TEST(FlagOpcodeHandlers, SED) {
         std::vector<uint8_t> rom = {SED};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &ps = machine.get_cpu().get_program_status();
         auto flags = std::bitset<8>(0);
         flags[Flags::DecimalMode] = true;
 
-        machine.get_cpu().get_program_status().set_value(0);
+        ps.set_value(0);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(ps.get_value(), flags);
     }
 
     TEST(FlagOpcodeHandlers, SEI) {
         std::vector<uint8_t> rom = {SEI};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &ps = machine.get_cpu().get_program_status();
         auto flags = std::bitset<8>(0);
         flags[Flags::Interrupt] = true;
 
-        machine.get_cpu().get_program_status().set_value(0);
+        ps.set_value(0);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(ps.get_value(), flags);
     }
 
     TEST(FlagOpcodeHandlers, CLC) {
         std::vector<uint8_t> rom = {CLC};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &ps = machine.get_cpu().get_program_status();
         auto flags = std::bitset<8>(0);
 
         machine.get_cpu().get_program_status().set_carry(true);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(ps.get_value(), flags);
     }
 
     TEST(FlagOpcodeHandlers, CLD) {
         std::vector<uint8_t> rom = {CLD};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &ps = machine.get_cpu().get_program_status();
         auto flags = std::bitset<8>(0);
 
         machine.get_cpu().get_program_status().set_decimal_mode(true);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(ps.get_value(), flags);
     }
 
     TEST(FlagOpcodeHandlers, CLI) {
         std::vector<uint8_t> rom = {CLI};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &ps = machine.get_cpu().get_program_status();
         auto flags = std::bitset<8>(0);
 
         machine.get_cpu().get_program_status().set_interrupt(true);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(ps.get_value(), flags);
     }
 
     TEST(FlagOpcodeHandlers, CLV) {
         std::vector<uint8_t> rom = {CLV};
         auto machine = Machine(rom, LOAD_ADDR);
+		auto &ps = machine.get_cpu().get_program_status();
         auto flags = std::bitset<8>(0);
 
         machine.get_cpu().get_program_status().set_overflow(true);
 
         machine.execute();
 
-        EXPECT_EQ(machine.get_cpu().get_program_status().get_value(), flags);
+        EXPECT_EQ(ps.get_value(), flags);
     }
 }
 
