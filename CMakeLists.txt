@@ -3,7 +3,7 @@ project(NESpp)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp tests/machine.cpp)
 add_executable(${CMAKE_PROJECT_NAME}_run ${SOURCE_FILES})
 
 include_directories(src)

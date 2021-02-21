@@ -15,6 +15,16 @@ set(HEADER_FILES
     cpu/machine.h
     cpu/handlers/flag_opcodes_handlers.h
     cpu/handlers/store_opcodes_handlers.h
+    cpu/handlers/bitwise_opcodes_handlers.h
+    cpu/handlers/branch_opcodes_handlers.h
+    cpu/handlers/stack_opcodes_handlers.h
+    cpu/handlers/compare_opcodes_handlers.h
+    cpu/handlers/math_opcodes_handlers.h
+    cpu/handlers/system_opcode_handlers.h
+    cpu/handlers/opcodes.h
+    utils/debug.h
+    cpu/handlers/jump_opcodes_handlers.h
+    cpu/handlers/load_opcodes_handlers.h
 )
 
 set(SOURCE_FILES
@@ -31,7 +41,15 @@ set(SOURCE_FILES
     cpu/machine.cpp
     cpu/handlers/store_opcodes_handlers.cpp
     cpu/handlers/flag_opcodes_handlers.cpp
-        cpu/handlers/bitwise_opcodes_handlers.cpp cpu/handlers/bitwise_opcodes_handlers.h cpu/handlers/branch_opcodes_handlers.cpp cpu/handlers/branch_opcodes_handlers.h cpu/handlers/stack_opcodes_handlers.cpp cpu/handlers/stack_opcodes_handlers.h cpu/handlers/compare_opcodes_handlers.cpp cpu/handlers/compare_opcodes_handlers.h cpu/handlers/math_opcodes_handlers.cpp cpu/handlers/math_opcodes_handlers.h cpu/handlers/system_opcode_handlers.cpp cpu/handlers/system_opcode_handlers.h cpu/handlers/opcodes.h utils/debug.h cpu/handlers/jump_opcodes_handlers.cpp cpu/handlers/jump_opcodes_handlers.h cpu/handlers/load_opcodes_handlers.cpp cpu/handlers/load_opcodes_handlers.h)
+    cpu/handlers/bitwise_opcodes_handlers.cpp
+    cpu/handlers/branch_opcodes_handlers.cpp
+    cpu/handlers/stack_opcodes_handlers.cpp
+    cpu/handlers/compare_opcodes_handlers.cpp
+    cpu/handlers/math_opcodes_handlers.cpp
+    cpu/handlers/system_opcode_handlers.cpp
+    cpu/handlers/jump_opcodes_handlers.cpp
+    cpu/handlers/load_opcodes_handlers.cpp
+)
 
 if (DEFINED SOURCE_FILES)
     add_library(
