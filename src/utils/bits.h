@@ -2,8 +2,10 @@
 #define NESPP_BITS_H
 
 #include <cstdint>
+#include <string>
+#include <iomanip>
 
-namespace nespp::utils {
+namespace nespp::bits {
 
     template <typename T>
     static T set_nth_bit(T value, uint8_t idx) {
@@ -21,6 +23,13 @@ namespace nespp::utils {
     bool get_nth_bit(T value, uint8_t idx) {
         T bit = (1u << idx) & value;
         return bit != 0;
+    }
+
+    template<typename T>
+    std::string int_to_hex(T val, int width = 4) {
+        std::stringstream stream;
+        stream << "0x" << std::uppercase << std::setfill('0') << std::setw(width) << std::hex << (int)val;
+        return stream.str();
     }
 
     static uint8_t get_low_u8(uint16_t value) {

@@ -18,6 +18,9 @@ namespace nespp {
         rom_size = rom.size();
         rom_address = load_at;
         pc->set_value(rom_address);
+
+        ps->set_value(0x24);
+
     }
 
     uint64_t Cpu::get_cycle_count() const {
@@ -98,13 +101,14 @@ namespace nespp {
     uint16_t Cpu::get_indirect_x_address() {
         uint16_t indirect_address = get_u8() + x->get_value();
         indirect_address &= 0xffu;
-        uint16_t address = memory->get_u16(indirect_address);
+        uint16_t address = memory->get_u16_bug(indirect_address);
+
         return address;
     }
 
     uint16_t Cpu::get_indirect_y_address() {
         uint16_t indirect_address = get_u8();
-        uint16_t address = memory->get_u16(indirect_address) + y->get_value();
+        uint16_t address = memory->get_u16_bug(indirect_address) + y->get_value();
         return address;
     }
 
@@ -148,18 +152,20 @@ namespace nespp {
         return memory->get_u8(address);
     }
 
-    void Cpu::dump() {
-        std::cerr << ps->get_name() << "\n";
-        std::cerr << ps->get_value().to_string() << "\n";
-        std::cerr << pc->get_name() << "\n";
-        std::cerr << "0x" << std::hex << std::setfill('0') << std::setw(4) << pc->get_value() << "\n";
-        std::cerr << a->get_name() << "\n";
-        std::cerr << "0x" << std::hex << std::setfill('0') << std::setw(4) << (int)a->get_value() << "\n";
-        std::cerr << x->get_name() << "\n";
-        std::cerr << "0x" << std::hex << std::setfill('0') << std::setw(4) << (int)x->get_value() << "\n";
-        std::cerr << y->get_name() << "\n";
-        std::cerr << "0x" << std::hex << std::setfill('0') << std::setw(4) << (int)y->get_value() << "\n";
-        std::cerr << std::endl;
+    std::string Cpu::dump() {
+        std::stringstream stream;
+
+        stream << a->get_name() << ":" << bits::int_to_hex(a->get_value(), 2).substr(2) << " ";
+        stream << x->get_name() << ":" << bits::int_to_hex(x->get_value(), 2).substr(2) << " ";
+        stream << y->get_name() << ":" << bits::int_to_hex(y->get_value(), 2).substr(2) << " ";
+        stream << "P:" << bits::int_to_hex(ps->get_value().to_ulong(), 2).substr(2) << " ";
+        stream << sp->get_name() << ":" << bits::int_to_hex(sp->get_value(), 2).substr(2) << " ";
+
+        return stream.str();
+    }
+
+    bool Cpu::is_end_of_program() {
+        return false;
     }
 
 }

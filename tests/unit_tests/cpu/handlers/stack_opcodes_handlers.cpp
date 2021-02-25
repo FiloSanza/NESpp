@@ -39,7 +39,7 @@ namespace nespp::tests {
 
         machine.execute();
 
-        EXPECT_EQ(cpu.get_stack().pop(), flags);
+        EXPECT_EQ(cpu.get_stack().pop(), flags.to_ulong());
         EXPECT_EQ(cpu.get_program_status().get_value(), flags);
     }
 

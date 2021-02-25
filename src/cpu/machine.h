@@ -2,6 +2,8 @@
 #define NESPP_MACHINE_H
 
 #include <memory>
+#include <functional>
+#include <stdexcept>
 #include "cpu.h"
 #include "handlers/opcode_handlers.h"
 
@@ -15,7 +17,14 @@ namespace nespp {
 
         void execute();
 
+        void add_before_exec_callback(std::function<void(Machine &, uint8_t)> func);
+        void add_after_exec_callback(std::function<void(Machine &, uint8_t)> func);
+        void reset_callbacks();
+
     private:
+        std::vector<std::function<void(Machine &, uint8_t)>> before_exec_callbacks;
+        std::vector<std::function<void(Machine &, uint8_t)>> after_exec_callbacks;
+
         std::unique_ptr<Cpu> cpu;
         OpcodeHandlers handlers;
     };

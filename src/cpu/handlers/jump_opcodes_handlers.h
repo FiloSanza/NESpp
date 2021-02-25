@@ -13,7 +13,7 @@ namespace nespp::jump_opcodes {
     void jmp(Cpu &cpu, uint16_t address);
 
     void jmp_absolute(Cpu &cpu);
-    void jmp_immediate(Cpu &cpu);
+    void jmp_indirect(Cpu &cpu);
     void jsr(Cpu &cpu);
     void rts(Cpu &cpu);
 

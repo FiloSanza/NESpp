@@ -11,7 +11,8 @@
 namespace nespp::store_opcodes {
     std::map<uint8_t, std::function<void(Cpu &)>> get_handlers();
 
-    void store(Cpu &cpu, Register<uint8_t> &reg);
+    void store(Cpu &cpu, uint8_t value, uint16_t address);
+    void store(Cpu &cpu, Register<uint8_t> &reg, uint16_t address);
 
     void sta_zero(Cpu &cpu);
     void sta_zero_x(Cpu &cpu);

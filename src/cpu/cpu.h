@@ -53,7 +53,9 @@ namespace nespp {
         Memory& get_memory();
         Stack& get_stack();
 
-        void dump();
+        bool is_end_of_program();
+
+        std::string dump();
     private:
         std::unique_ptr<Memory> memory;
         std::unique_ptr<Stack> stack;

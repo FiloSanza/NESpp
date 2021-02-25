@@ -24,7 +24,11 @@ namespace nespp::store_opcodes {
     }
 
     void store(Cpu &cpu, Register<uint8_t> &reg, uint16_t address) {
-        cpu.get_memory().set_u8(address, reg.get_value());
+        store(cpu, reg.get_value(), address);
+    }
+
+    void store(Cpu &cpu, uint8_t value, uint16_t address) {
+        cpu.get_memory().set_u8(address, value);
     }
 
     void sta_zero(Cpu &cpu) {

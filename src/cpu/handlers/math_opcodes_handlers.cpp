@@ -47,7 +47,7 @@ namespace nespp::math_opcodes {
         memory.set_u8(address, --value);
 
         cpu.get_program_status().set_zero(value == 0);
-        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+        cpu.get_program_status().set_negative(bits::get_nth_bit(value, 7));
     }
 
     void dec_zero(Cpu &cpu) {
@@ -75,7 +75,7 @@ namespace nespp::math_opcodes {
         reg.set_value(--value);
 
         cpu.get_program_status().set_zero(value == 0);
-        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+        cpu.get_program_status().set_negative(bits::get_nth_bit(value, 7));
     }
 
     void dex(Cpu &cpu) {
@@ -93,7 +93,7 @@ namespace nespp::math_opcodes {
         memory.set_u8(address, ++value);
 
         cpu.get_program_status().set_zero(value == 0);
-        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+        cpu.get_program_status().set_negative(bits::get_nth_bit(value, 7));
     }
 
     void inc_zero(Cpu &cpu) {
@@ -121,7 +121,7 @@ namespace nespp::math_opcodes {
         reg.set_value(++value);
 
         cpu.get_program_status().set_zero(value == 0);
-        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+        cpu.get_program_status().set_negative(bits::get_nth_bit(value, 7));
     }
 
     void inx(Cpu &cpu) {
@@ -142,13 +142,12 @@ namespace nespp::math_opcodes {
         reg.set_value(result & 0xffu);
 
         //overflow happens when result's sign is wrong (value and old_val both positive but negative result and the opposite)
-        bool overflow = (value < 0x7f && old_val < 0x7f && reg.get_value() > 0x7f) ||
-                (value > 0x7f && old_val > 0x7f && reg.get_value() < 0x7f);
+        bool overflow = ((old_val ^ result) & (value ^ result) & 0x80) != 0;
 
         ps.set_zero((result & 0xffu) == 0);
         ps.set_carry(result >= 0x100);
         ps.set_overflow(overflow);
-        ps.set_negative(utils::get_nth_bit(result, 7));
+        ps.set_negative(bits::get_nth_bit(result, 7));
 
     }
 
@@ -193,9 +192,20 @@ namespace nespp::math_opcodes {
     }
 
     void sbc(Cpu &cpu, Register<uint8_t> &reg, uint16_t value) {
-        //sbc can be simplified to adc of the two's complement of value
-        value = (value ^ 0xff) + (cpu.get_program_status().is_carry_set() ? 0 : 1);
-        adc(cpu, reg, value);
+        auto old_val = reg.get_value();
+        auto &ps = cpu.get_program_status();
+
+        uint16_t result = old_val;
+        result = result - value - (cpu.get_program_status().is_carry_set() ? 0 : 1);
+
+        reg.set_value(result & 0xffu);
+
+        bool overflow = ((old_val ^ result) & 0x80) && ((old_val ^ value) & 0x80);
+
+        ps.set_zero((result & 0xffu) == 0);
+        ps.set_carry(result < 0x100);
+        ps.set_overflow(overflow);
+        ps.set_negative(bits::get_nth_bit(result, 7));
     }
 
     void sbc_immediate(Cpu &cpu) {

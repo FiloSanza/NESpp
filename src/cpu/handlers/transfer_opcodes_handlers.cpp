@@ -22,7 +22,7 @@ namespace nespp::transfer_opcodes {
 
         if(!update_flags) return;
 
-        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+        cpu.get_program_status().set_negative(bits::get_nth_bit(value, 7));
         cpu.get_program_status().set_zero(value == 0);
     }
 
@@ -43,7 +43,7 @@ namespace nespp::transfer_opcodes {
     }
 
     void txs(nespp::Cpu &cpu) {
-        transfer(cpu, cpu.get_stack_pointer(), cpu.get_x(), true);
+        transfer(cpu, cpu.get_stack_pointer(), cpu.get_x(), false);
     }
 
     void tya(Cpu &cpu) {

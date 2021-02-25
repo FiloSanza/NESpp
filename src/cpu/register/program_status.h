@@ -14,8 +14,8 @@ namespace nespp {
         Interrupt = 2,
         DecimalMode = 3,
         Break = 4,
-        Overflow = 5,
-        Negative = 6
+        Overflow = 6,
+        Negative = 7
     };
 
     class ProgramStatus : public Register<std::bitset<FLAG_NUM>> {

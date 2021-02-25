@@ -53,7 +53,7 @@ namespace nespp::tests {
 
         auto low_pc = machine.get_cpu().get_stack().pop();
         auto high_pc = machine.get_cpu().get_stack().pop();
-        auto queued_pc = utils::merge_u8(low_pc, high_pc);
+        auto queued_pc = bits::merge_u8(low_pc, high_pc);
         EXPECT_EQ(queued_pc, LOAD_ADDR + 3);
     }
 

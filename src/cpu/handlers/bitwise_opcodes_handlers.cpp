@@ -67,7 +67,7 @@ namespace nespp::bitwise_opcodes {
         a.set_value(result);
 
         cpu.get_program_status().set_zero(result == 0);
-        cpu.get_program_status().set_negative(utils::get_nth_bit(result, 7));
+        cpu.get_program_status().set_negative(bits::get_nth_bit(result, 7));
     }
 
     void and_immediate(Cpu &cpu) {
@@ -115,7 +115,7 @@ namespace nespp::bitwise_opcodes {
         a.set_value(result);
 
         cpu.get_program_status().set_zero(result == 0);
-        cpu.get_program_status().set_negative(utils::get_nth_bit(result, 7));
+        cpu.get_program_status().set_negative(bits::get_nth_bit(result, 7));
     }
 
     void eor_immediate(Cpu &cpu) {
@@ -163,7 +163,7 @@ namespace nespp::bitwise_opcodes {
         a.set_value(result);
 
         cpu.get_program_status().set_zero(result == 0);
-        cpu.get_program_status().set_negative(utils::get_nth_bit(result, 7));
+        cpu.get_program_status().set_negative(bits::get_nth_bit(result, 7));
     }
 
     void ora_immediate(Cpu &cpu) {
@@ -208,33 +208,33 @@ namespace nespp::bitwise_opcodes {
 
     void rol(Cpu &cpu, Register<uint8_t> &reg) {
         uint8_t value = reg.get_value();
-        bool carry = utils::get_nth_bit(value, 7);
+        bool carry = bits::get_nth_bit(value, 7);
 
         value <<= 1u;
         value = cpu.get_program_status().is_carry_set() ?
-                    utils::set_nth_bit(value, 0) :
-                    utils::clear_nth_bit(value, 0);
+                bits::set_nth_bit(value, 0) :
+                bits::clear_nth_bit(value, 0);
         reg.set_value(value);
 
         cpu.get_program_status().set_carry(carry);
         cpu.get_program_status().set_zero(value == 0);
-        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+        cpu.get_program_status().set_negative(bits::get_nth_bit(value, 7));
     }
 
     void rol(Cpu &cpu, uint16_t address) {
         uint8_t value = cpu.get_memory().get_u8(address);
-        bool carry = utils::get_nth_bit(value, 7);
+        bool carry = bits::get_nth_bit(value, 7);
 
         value <<= 1u;
         value = cpu.get_program_status().is_carry_set() ?
-                utils::set_nth_bit(value, 0) :
-                utils::clear_nth_bit(value, 0);
+                bits::set_nth_bit(value, 0) :
+                bits::clear_nth_bit(value, 0);
 
         cpu.get_memory().set_u8(address, value);
 
         cpu.get_program_status().set_carry(carry);
         cpu.get_program_status().set_zero(value == 0);
-        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+        cpu.get_program_status().set_negative(bits::get_nth_bit(value, 7));
     }
 
     void rol_acc(Cpu &cpu) {
@@ -261,34 +261,49 @@ namespace nespp::bitwise_opcodes {
         rol(cpu, address);
     }
 
+    void rol_abs_y(Cpu &cpu) {
+        auto address = cpu.get_absolute_y_address();
+        rol(cpu, address);
+    }
+
+    void rol_ind_x(Cpu &cpu) {
+        auto address = cpu.get_indirect_x_address();
+        rol(cpu, address);
+    }
+
+    void rol_ind_y(Cpu &cpu) {
+        auto address = cpu.get_indirect_y_address();
+        rol(cpu, address);
+    }
+
     void ror(Cpu &cpu, Register<uint8_t> &reg) {
         uint8_t value = reg.get_value();
-        bool carry = utils::get_nth_bit(value, 0);
+        bool carry = bits::get_nth_bit(value, 0);
 
         value >>= 1u;
         value = cpu.get_program_status().is_carry_set() ?
-                utils::set_nth_bit(value, 7) :
-                utils::clear_nth_bit(value, 7);
+                bits::set_nth_bit(value, 7) :
+                bits::clear_nth_bit(value, 7);
         reg.set_value(value);
 
         cpu.get_program_status().set_carry(carry);
         cpu.get_program_status().set_zero(value == 0);
-        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+        cpu.get_program_status().set_negative(bits::get_nth_bit(value, 7));
     }
 
     void ror(Cpu &cpu, uint16_t address) {
         uint8_t value = cpu.get_memory().get_u8(address);
-        bool carry = utils::get_nth_bit(value, 0);
+        bool carry = bits::get_nth_bit(value, 0);
 
         value >>= 1u;
         value = cpu.get_program_status().is_carry_set() ?
-                utils::set_nth_bit(value, 7) :
-                utils::clear_nth_bit(value, 7);
+                bits::set_nth_bit(value, 7) :
+                bits::clear_nth_bit(value, 7);
         cpu.get_memory().set_u8(address, value);
 
         cpu.get_program_status().set_carry(carry);
         cpu.get_program_status().set_zero(value == 0);
-        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+        cpu.get_program_status().set_negative(bits::get_nth_bit(value, 7));
     }
 
     void ror_acc(Cpu &cpu) {
@@ -320,8 +335,8 @@ namespace nespp::bitwise_opcodes {
         auto &ps = cpu.get_program_status();
 
         ps.set_zero(result == 0);
-        ps.set_overflow(utils::get_nth_bit(value, 6));
-        ps.set_negative(utils::get_nth_bit(value, 7));
+        ps.set_overflow(bits::get_nth_bit(value, 6));
+        ps.set_negative(bits::get_nth_bit(value, 7));
     }
 
     void bit_absolute(Cpu &cpu) {
@@ -338,8 +353,8 @@ namespace nespp::bitwise_opcodes {
         auto &ps = cpu.get_program_status();
         uint8_t value = reg.get_value();
 
-        ps.set_carry(utils::get_nth_bit(value, 7));
-        ps.set_negative(utils::get_nth_bit(value, 6));
+        ps.set_carry(bits::get_nth_bit(value, 7));
+        ps.set_negative(bits::get_nth_bit(value, 6));
 
         value <<= 1;
 
@@ -351,8 +366,8 @@ namespace nespp::bitwise_opcodes {
         auto &ps = cpu.get_program_status();
         uint8_t value = cpu.get_memory().get_u8(address);
 
-        ps.set_carry(utils::get_nth_bit(value, 7));
-        ps.set_negative(utils::get_nth_bit(value, 6));
+        ps.set_carry(bits::get_nth_bit(value, 7));
+        ps.set_negative(bits::get_nth_bit(value, 6));
 
         value <<= 1;
 
@@ -388,22 +403,26 @@ namespace nespp::bitwise_opcodes {
         auto value = reg.get_value();
         auto &ps = cpu.get_program_status();
 
-        ps.set_carry(utils::get_nth_bit(value, 0));
+        ps.set_carry(bits::get_nth_bit(value, 0));
         ps.set_zero(value == 0x01);
 
         value >>= 1u;
         reg.set_value(value);
+
+        ps.set_negative(bits::get_nth_bit(value, 7));
     }
 
     void lsr(Cpu &cpu, uint16_t address) {
         auto value = cpu.get_memory().get_u8(address);
         auto &ps = cpu.get_program_status();
 
-        ps.set_carry(utils::get_nth_bit(value, 0));
+        ps.set_carry(bits::get_nth_bit(value, 0));
         ps.set_zero(value == 0x01);
 
         value >>= 1u;
         cpu.get_memory().set_u8(address, value);
+
+        ps.set_negative(bits::get_nth_bit(value, 7));
     }
 
     void lsr_accumulator(Cpu &cpu) {

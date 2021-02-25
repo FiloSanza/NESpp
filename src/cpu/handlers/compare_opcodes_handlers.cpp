@@ -30,7 +30,7 @@ namespace nespp::compare_opcodes {
 
         ps.set_zero(result == 0);
         ps.set_carry(reg.get_value() >= value);
-        ps.set_negative(utils::get_nth_bit(result, 7));
+        ps.set_negative(bits::get_nth_bit(result, 7));
     }
 
     void cmp_imm(Cpu &cpu) {

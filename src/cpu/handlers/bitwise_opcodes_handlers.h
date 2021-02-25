@@ -44,6 +44,9 @@ namespace nespp::bitwise_opcodes {
     void rol_zero_x(Cpu &cpu);
     void rol_abs(Cpu &cpu);
     void rol_abs_x(Cpu &cpu);
+    void rol_abs_y(Cpu &cpu);
+    void rol_ind_x(Cpu &cpu);
+    void rol_ind_y(Cpu &cpu);
 
     void ror(Cpu &cpu, Register<uint8_t> &reg);
     void ror(Cpu &cpu, uint16_t address);

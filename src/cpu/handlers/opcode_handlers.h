@@ -12,10 +12,14 @@
 #include "math_opcodes_handlers.h"
 #include "load_opcodes_handlers.h"
 #include "jump_opcodes_handlers.h"
+#include "system_opcode_handlers.h"
+#include "unofficial_opcodes_handlers.h"
 #include "opcodes.h"
 #include <map>
 #include <functional>
 #include <stdexcept>
+#include <iostream>
+#include <iomanip>
 
 namespace nespp {
 

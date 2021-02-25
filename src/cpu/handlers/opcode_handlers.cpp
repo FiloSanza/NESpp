@@ -13,13 +13,15 @@ namespace nespp {
         handlers.merge(math_opcodes::get_handlers());
         handlers.merge(jump_opcodes::get_handlers());
         handlers.merge(load_opcodes::get_handlers());
+        handlers.merge(system_opcodes::get_handlers());
+        handlers.merge(unofficial_opcodes::get_handlers());
     }
 
     void OpcodeHandlers::handle_opcode(Cpu &cpu, uint8_t opcode) {
         auto handler = handlers.find(opcode);
 
         if(handler == handlers.end())
-            throw std::domain_error("Opcode " + std::to_string(opcode) + " handler not found.");
+            throw std::domain_error("Opcode " + bits::int_to_hex(opcode) + " handler not found.");
 
         handler->second(cpu);
     }

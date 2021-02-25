@@ -110,3 +110,9 @@ fabric.properties
 /cmake-build-debug/
 
 /.idea/workspace.xml
+
+/tests/test_roms/cpu/*.log
+
+/build/
+
+/venv/

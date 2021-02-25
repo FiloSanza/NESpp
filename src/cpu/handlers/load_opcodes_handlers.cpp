@@ -32,7 +32,7 @@ namespace nespp::load_opcodes {
         reg.set_value(value);
 
         ps.set_zero(value == 0);
-        ps.set_negative(utils::get_nth_bit(value, 7));
+        ps.set_negative(bits::get_nth_bit(value, 7));
     }
 
     void lda_immediate(Cpu &cpu) {

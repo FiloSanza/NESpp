@@ -6,6 +6,8 @@
 #include <functional>
 #include <stdexcept>
 
+#include "utils/bits.h"
+
 namespace nespp {
 
     constexpr uint32_t MEM_SIZE = 0x10000;  //64K
@@ -21,6 +23,7 @@ namespace nespp {
 
         void set_u16(uint16_t address, uint16_t value);
         uint16_t get_u16(uint16_t address);
+        uint16_t get_u16_bug(uint16_t address);
 
         void set_u8_from_page(uint8_t page, uint8_t offset, uint8_t value);
         uint8_t get_u8_from_page(uint8_t page, uint8_t offset);

@@ -20,6 +20,7 @@ namespace nespp::stack_opcodes {
 
     void php(Cpu &cpu) {
         auto value = (uint8_t)cpu.get_program_status().get_value().to_ulong();
+        value = bits::set_nth_bit(value, Flags::Break);
         cpu.get_stack().push(value);
     }
 
@@ -28,11 +29,13 @@ namespace nespp::stack_opcodes {
         cpu.get_a().set_value(value);
 
         cpu.get_program_status().set_zero(value == 0);
-        cpu.get_program_status().set_negative(utils::get_nth_bit(value, 7));
+        cpu.get_program_status().set_negative(bits::get_nth_bit(value, 7));
     }
 
     void plp(Cpu &cpu) {
         auto value = cpu.get_stack().pop();
+        value = bits::clear_nth_bit(value, Flags::Break);
+        value = bits::set_nth_bit(value, 5);
         cpu.get_program_status().set_value(value);
     }
 }

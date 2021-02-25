@@ -49,7 +49,7 @@ set(SOURCE_FILES
     cpu/handlers/system_opcode_handlers.cpp
     cpu/handlers/jump_opcodes_handlers.cpp
     cpu/handlers/load_opcodes_handlers.cpp
-)
+        utils/disassembler.h cpu/handlers/unofficial_opcodes_handlers.cpp cpu/handlers/unofficial_opcodes_handlers.h)
 
 if (DEFINED SOURCE_FILES)
     add_library(

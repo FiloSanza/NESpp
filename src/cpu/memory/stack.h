@@ -6,7 +6,7 @@
 
 namespace nespp {
 
-    constexpr uint16_t STACK_POINTER_START = 0xff;
+    constexpr uint16_t STACK_POINTER_START = 0xfd;
     constexpr uint16_t STACK_PAGE = 1;
 
     class Stack {

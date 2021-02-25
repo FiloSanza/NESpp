@@ -1,5 +1,7 @@
 #include "memory.h"
 
+#include <iostream>
+
 namespace nespp {
 
     Memory::Memory() {
@@ -47,7 +49,7 @@ namespace nespp {
 
     void Memory::load(const std::vector<uint8_t>& data, uint16_t address) {
         //TODO: use std::format when available
-        if(address + data.size() >= memory.size())
+        if(address + data.size() > memory.size())
             throw std::out_of_range("Error trying to load " + std::to_string(data.size()) + " bytes at " + std::to_string(address) + " to memory, memory size is " + std::to_string(memory.size()));
 
         for(size_t i=0; i<data.size(); i++)
@@ -81,6 +83,18 @@ namespace nespp {
         value = (value << 8u) | get_u8(address);
 
         return value;
+    }
+
+    uint16_t Memory::get_u16_bug(uint16_t address) {
+        auto lo_addr = address;
+        auto hi_addr = (lo_addr & 0xff00) | ((lo_addr + 1) & 0x00ff);
+
+        std::cout << "BUGGY MEMORY READ @ " << bits::int_to_hex(address) << " indirect is " << bits::int_to_hex(lo_addr) << " " << bits::int_to_hex(hi_addr) << "\n";
+
+        auto lo = get_u8(lo_addr);
+        auto hi = get_u8(hi_addr);
+
+        return bits::merge_u8(lo, hi);
     }
 
     void Memory::set_u16_from_page(uint8_t page, uint8_t offset, uint16_t value) {
