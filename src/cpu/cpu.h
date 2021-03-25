@@ -10,6 +10,7 @@
 #include "register/register.h"
 #include "register/program_counter.h"
 #include "register/program_status.h"
+#include "handlers/opcodes.h"
 
 namespace nespp {
 

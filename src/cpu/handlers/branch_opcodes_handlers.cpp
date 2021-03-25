@@ -17,51 +17,61 @@ namespace nespp::branch_opcodes {
         return handlers;
     }
 
+    void branch(Cpu &cpu, uint16_t offset) {
+        auto pc = cpu.get_program_counter().get_value();
+
+        cpu.inc_cycle_count(1);
+        if(Memory::cross_page_boundary(pc, pc + offset))
+            cpu.inc_cycle_count(1);
+
+        cpu.get_program_counter().jump(offset);
+    }
+
     void bcc(Cpu &cpu) {
         auto offset = cpu.get_u8();
         if(!cpu.get_program_status().is_carry_set())
-            cpu.get_program_counter().jump(offset);
+            branch(cpu, offset);
     }
 
     void bcs(Cpu &cpu) {
         auto offset = cpu.get_u8();
         if(cpu.get_program_status().is_carry_set())
-            cpu.get_program_counter().jump(offset);
+            branch(cpu, offset);
     }
 
     void beq(Cpu &cpu) {
         auto offset = cpu.get_u8();
         if(cpu.get_program_status().is_zero_set())
-            cpu.get_program_counter().jump(offset);
+            branch(cpu, offset);
     }
 
     void bne(Cpu &cpu) {
         auto offset = cpu.get_u8();
         if(!cpu.get_program_status().is_zero_set())
-            cpu.get_program_counter().jump(offset);
+            branch(cpu, offset);
     }
 
     void bmi(Cpu &cpu) {
         auto offset = cpu.get_u8();
         if(cpu.get_program_status().is_negative_set())
-            cpu.get_program_counter().jump(offset);
+            branch(cpu, offset);
     }
 
     void bpl(Cpu &cpu) {
         auto offset = cpu.get_u8();
         if(!cpu.get_program_status().is_negative_set())
-            cpu.get_program_counter().jump(offset);
+            branch(cpu, offset);
     }
 
     void bvc(Cpu &cpu) {
         auto offset = cpu.get_u8();
         if(!cpu.get_program_status().is_overflow_set())
-            cpu.get_program_counter().jump(offset);
+            branch(cpu, offset);
     }
 
     void bvs(Cpu &cpu) {
         auto offset = cpu.get_u8();
         if(cpu.get_program_status().is_overflow_set())
-            cpu.get_program_counter().jump(offset);
+            branch(cpu, offset);
     }
 }

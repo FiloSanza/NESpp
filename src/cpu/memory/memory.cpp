@@ -26,14 +26,6 @@ namespace nespp {
         return memory[address];
     }
 
-    bool Memory::cross_page_boundary(uint16_t address, uint8_t size = 8) {
-        uint16_t end = address + size - 1;
-        uint16_t page_start = address & (uint16_t)0xFF00;
-        uint16_t page_end = end & (uint16_t)0xFF00;
-
-        return page_start == page_end;
-    }
-
     void Memory::add_callback_on_write(const std::function<void(uint16_t, uint8_t)>& callback) {
         callback_on_write.emplace_back(callback);
     }
@@ -103,6 +95,10 @@ namespace nespp {
 
     uint16_t Memory::get_u16_from_page(uint8_t page, uint8_t offset) {
         return get_u16(get_page_address(page, offset));
+    }
+
+    bool Memory::cross_page_boundary(uint16_t base, uint16_t address) {
+        return bits::get_high_u8(base) != bits::get_high_u8(address);
     }
 
 }

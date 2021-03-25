@@ -20,6 +20,7 @@ namespace nespp {
         }
 
         handlers.handle_opcode(*cpu, opcode);
+        cpu->inc_cycle_count(INSTRUCTION_CYCLES[opcode]);
 
         for(auto &f : after_exec_callbacks)
             f(*this, opcode);
@@ -29,11 +30,11 @@ namespace nespp {
         return *cpu;
     }
 
-    void Machine::add_before_exec_callback(std::function<void(Machine &, uint8_t)> func) {
+    void Machine::add_before_exec_callback(const std::function<void(Machine &, uint8_t)>& func) {
         before_exec_callbacks.push_back(func);
     }
 
-    void Machine::add_after_exec_callback(std::function<void(Machine &, uint8_t)> func) {
+    void Machine::add_after_exec_callback(const std::function<void(Machine &, uint8_t)>& func) {
         after_exec_callbacks.push_back(func);
     }
 

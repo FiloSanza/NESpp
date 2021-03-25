@@ -17,8 +17,8 @@ namespace nespp {
 
         void execute();
 
-        void add_before_exec_callback(std::function<void(Machine &, uint8_t)> func);
-        void add_after_exec_callback(std::function<void(Machine &, uint8_t)> func);
+        void add_before_exec_callback(const std::function<void(Machine &, uint8_t)>& func);
+        void add_after_exec_callback(const std::function<void(Machine &, uint8_t)>& func);
         void reset_callbacks();
 
     private:

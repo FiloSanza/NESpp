@@ -10,6 +10,8 @@ namespace nespp::branch_opcodes {
 
     std::map<uint8_t, std::function<void(Cpu &)>> get_handlers();
 
+    void branch(Cpu &cpu, uint16_t offset);
+
     void bcc(Cpu &cpu);
     void bcs(Cpu &cpu);
     void beq(Cpu &cpu);

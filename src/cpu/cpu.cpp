@@ -91,11 +91,21 @@ namespace nespp {
     }
 
     uint16_t Cpu::get_absolute_x_address() {
-        return get_u16() + x->get_value();
+        auto address = get_u16() + x->get_value();
+
+        if (Memory::cross_page_boundary(address - x->get_value(), address))
+            inc_cycle_count(1);
+
+        return address;
     }
 
     uint16_t Cpu::get_absolute_y_address() {
-        return get_u16() + y->get_value();
+        auto address = get_u16() + y->get_value();
+
+        if (Memory::cross_page_boundary(address - y->get_value(), address))
+            inc_cycle_count(1);
+
+        return address;
     }
 
     uint16_t Cpu::get_indirect_x_address() {
@@ -109,6 +119,10 @@ namespace nespp {
     uint16_t Cpu::get_indirect_y_address() {
         uint16_t indirect_address = get_u8();
         uint16_t address = memory->get_u16_bug(indirect_address) + y->get_value();
+
+        if(Memory::cross_page_boundary(address - y->get_value(), address))
+            inc_cycle_count(1);
+
         return address;
     }
 

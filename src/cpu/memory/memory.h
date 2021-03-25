@@ -36,7 +36,7 @@ namespace nespp {
         void reset_callbacks();
         
         //return true if the page boundary is crossed reading/writing "size" bits starting from "address"
-        static bool cross_page_boundary(uint16_t address, uint8_t size);
+        static bool cross_page_boundary(uint16_t base, uint16_t address);
     private:
         std::vector<uint8_t> memory;
         std::vector<std::function<void(uint16_t, uint16_t)>> callback_on_write;
