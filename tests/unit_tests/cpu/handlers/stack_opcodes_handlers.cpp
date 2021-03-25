@@ -14,7 +14,7 @@ namespace nespp::tests {
 
     TEST(StackOpcodeHandlers, PHA) {
         uint8_t a_value = 0x14;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {PHA};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -46,7 +46,7 @@ namespace nespp::tests {
     TEST(StackOpcodeHandlers, PLA) {
         uint8_t a_value = 0x14;
         uint8_t a_temp_value = 0x10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {PLA};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -64,7 +64,7 @@ namespace nespp::tests {
     TEST(StackOpcodeHandlers, PLA_ZERO) {
         uint8_t a_value = 0x0;
         uint8_t a_temp_value = 0x10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Zero] = true;
 
         std::vector<uint8_t> rom = {PLA};
@@ -83,7 +83,7 @@ namespace nespp::tests {
     TEST(StackOpcodeHandlers, PLA_NEGATIVE) {
         uint8_t a_value = 0xff;
         uint8_t a_temp_value = 0x10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {PLA};

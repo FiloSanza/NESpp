@@ -43,7 +43,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, DEC_ZERO) {
         uint8_t memory_value = 0x10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {DEC_ZERO, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -59,7 +59,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, DEC_ZERO_ZERO) {
         uint8_t memory_value = 0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Zero] = true;
 
         std::vector<uint8_t> rom = {DEC_ZERO, ZERO_PAGE_ADDR};
@@ -76,7 +76,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, DEC_ZERO_NEGATIVE) {
         uint8_t memory_value = 0x00;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {DEC_ZERO, ZERO_PAGE_ADDR};
@@ -95,7 +95,7 @@ namespace nespp::tests {
     TEST(MathOpcodeHandlers, DEC_ZERO_X) {
         uint8_t x_value = 0x04;
         uint8_t memory_value = 0x10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {DEC_ZERO_X, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -113,7 +113,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, DEC_ABS) {
         uint8_t memory_value = 0x10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {DEC_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -130,7 +130,7 @@ namespace nespp::tests {
     TEST(MathOpcodeHandlers, DEC_ABS_X) {
         uint8_t x_value = 0x04;
         uint8_t memory_value = 0x10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {DEC_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -148,7 +148,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, DEX) {
         uint8_t x_value = 0x10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {DEX};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -164,7 +164,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, DEX_ZERO) {
         uint8_t x_value = 0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Zero] = true;
 
         std::vector<uint8_t> rom = {DEX};
@@ -181,7 +181,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, DEX_NEGATIVE) {
         uint8_t x_value = 0x00;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {DEX};
@@ -199,7 +199,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, DEY) {
         uint8_t y_value = 0x10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {DEY};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -215,7 +215,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, DEY_ZERO) {
         uint8_t y_value = 0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Zero] = true;
 
         std::vector<uint8_t> rom = {DEY};
@@ -232,7 +232,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, DEY_NEGATIVE) {
         uint8_t y_value = 0x00;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {DEY};
@@ -250,7 +250,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, INC_ZERO) {
         uint8_t memory_value = 0x10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {INC_ZERO, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -266,7 +266,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, INC_ZERO_ZERO) {
         uint8_t memory_value = -0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Zero] = true;
 
         std::vector<uint8_t> rom = {INC_ZERO, ZERO_PAGE_ADDR};
@@ -284,7 +284,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, INC_ZERO_NEGATIVE) {
         uint8_t memory_value = -0x02;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {INC_ZERO, ZERO_PAGE_ADDR};
@@ -303,7 +303,7 @@ namespace nespp::tests {
     TEST(MathOpcodeHandlers, INC_ZERO_X) {
         uint8_t x_value = 0x04;
         uint8_t memory_value = 0x10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {INC_ZERO_X, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -321,7 +321,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, INC_ABS) {
         uint8_t memory_value = 0x10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {INC_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -338,7 +338,7 @@ namespace nespp::tests {
     TEST(MathOpcodeHandlers, INC_ABS_X) {
         uint8_t x_value = 0x04;
         uint8_t memory_value = 0x10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {INC_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -356,7 +356,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, INX) {
         uint8_t x_value = 0x10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {INX};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -372,7 +372,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, INX_ZERO) {
         uint8_t x_value = -0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Zero] = true;
 
         std::vector<uint8_t> rom = {INX};
@@ -390,7 +390,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, INX_NEGATIVE) {
         uint8_t x_value = -0x02;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {INX};
@@ -408,7 +408,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, INY) {
         uint8_t y_value = 0x10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {INY};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -424,7 +424,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, INY_ZERO) {
         uint8_t y_value = -0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Zero] = true;
 
         std::vector<uint8_t> rom = {INY};
@@ -442,7 +442,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, INY_NEGATIVE) {
         uint8_t y_value = -0x02;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {INY};
@@ -460,7 +460,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, ADC_IMM) {
         uint8_t a_value = 20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {ADC_IMM, 20};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -476,7 +476,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, ADC_IMM_ZERO) {
         uint8_t a_value = 0;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Zero] = true;
 
         std::vector<uint8_t> rom = {ADC_IMM, 0};
@@ -493,7 +493,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, ADC_IMM_ZERO_CARRY) {
         uint8_t a_value = 1;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -511,7 +511,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, ADC_IMM_NEGATIVE) {
         uint8_t a_value = 20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {ADC_IMM, 200};
@@ -528,7 +528,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, ADC_IMM_OVERFLOW_NEGATIVE) {
         uint8_t a_value = 20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Overflow] = true;
         flags[Flags::Negative] = true;
 
@@ -546,7 +546,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, ADC_IMM_OVERFLOW_POSITIVE) {
         uint8_t a_value = 170;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Overflow] = true;
         flags[Flags::Carry] = true;
 
@@ -565,7 +565,7 @@ namespace nespp::tests {
     TEST(MathOpcodeHandlers, ADC_ZERO) {
         uint8_t a_value = 20;
         uint8_t zero_value = 20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {ADC_ZERO, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -584,7 +584,7 @@ namespace nespp::tests {
         uint8_t a_value = 20;
         uint8_t x_value = 0x10;
         uint8_t zero_value = 20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {ADC_ZERO_X, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -604,7 +604,7 @@ namespace nespp::tests {
     TEST(MathOpcodeHandlers, ADC_ABS) {
         uint8_t a_value = 20;
         uint8_t memory_value = 20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {ADC_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -623,7 +623,7 @@ namespace nespp::tests {
         uint8_t a_value = 20;
         uint8_t x_value = 0x30;
         uint8_t memory_value = 20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {ADC_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -644,7 +644,7 @@ namespace nespp::tests {
         uint8_t a_value = 20;
         uint8_t y_value = 0x30;
         uint8_t memory_value = 20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {ADC_ABS_Y, ABS_ADDR_LOW, ABS_ADDR_HIGH};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -667,7 +667,7 @@ namespace nespp::tests {
         uint8_t memory_value = 20;
         uint16_t indirect_addr = 0x220;
 
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {ADC_IND_X, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -691,7 +691,7 @@ namespace nespp::tests {
         uint8_t memory_value = 20;
         uint16_t indirect_addr = 0x220;
 
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         std::vector<uint8_t> rom = {ADC_IND_Y, ZERO_PAGE_ADDR};
         auto machine = Machine(rom, LOAD_ADDR);
@@ -711,7 +711,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, SBC_IMM) {
         uint8_t a_value = 0x50;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {SBC_IMM, 0x20};
@@ -728,7 +728,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, SBC_IMM_ZERO) {
         uint8_t a_value = 10;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -746,7 +746,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, SBC_IMM_BORROW) {
         uint8_t a_value = 0xd0;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = false;
         flags[Flags::Negative] = true;
 
@@ -764,7 +764,7 @@ namespace nespp::tests {
 
     TEST(MathOpcodeHandlers, SBC_IMM_OVERFLOW) {
         uint8_t a_value = 0x50;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = false;
         flags[Flags::Overflow] = true;
         flags[Flags::Negative] = true;
@@ -784,7 +784,7 @@ namespace nespp::tests {
     TEST(MathOpcodeHandlers, SBC_ZERO) {
         uint8_t a_value = 0x30;
         uint8_t zero_value = 0x20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {SBC_ZERO, ZERO_PAGE_ADDR};
@@ -804,7 +804,7 @@ namespace nespp::tests {
         uint8_t a_value = 0x30;
         uint8_t x_value = 0x10;
         uint8_t zero_value = 0x20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {SBC_ZERO_X, ZERO_PAGE_ADDR};
@@ -825,7 +825,7 @@ namespace nespp::tests {
     TEST(MathOpcodeHandlers, SBC_ABS) {
         uint8_t a_value = 0x30;
         uint8_t memory_value = 0x20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {SBC_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
@@ -845,7 +845,7 @@ namespace nespp::tests {
         uint8_t a_value = 0x30;
         uint8_t x_value = 0x30;
         uint8_t memory_value = 0x20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {SBC_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
@@ -867,7 +867,7 @@ namespace nespp::tests {
         uint8_t a_value = 0x30;
         uint8_t y_value = 0x30;
         uint8_t memory_value = 0x20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {SBC_ABS_Y, ABS_ADDR_LOW, ABS_ADDR_HIGH};
@@ -891,7 +891,7 @@ namespace nespp::tests {
         uint8_t memory_value = 0x20;
         uint16_t indirect_addr = 0x220;
 
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {SBC_IND_X, ZERO_PAGE_ADDR};
@@ -916,7 +916,7 @@ namespace nespp::tests {
         uint8_t memory_value = 0x20;
         uint16_t indirect_addr = 0x220;
 
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {SBC_IND_Y, ZERO_PAGE_ADDR};

@@ -30,7 +30,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CMP_IMM_CARRY) {
         uint8_t a_value = 0x14;
         uint8_t immediate_value = 0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {CMP_IMM, immediate_value};
@@ -48,7 +48,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CMP_IMM_ZERO) {
         uint8_t a_value = 0x14;
         uint8_t immediate_value = 0x14;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -67,7 +67,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CMP_IMM_NEGATIVE) {
         uint8_t a_value = 0x14;
         uint8_t immediate_value = 0x20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {CMP_IMM, immediate_value};
@@ -85,7 +85,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CMP_ZERO_CARRY) {
         uint8_t a_value = 0x14;
         uint8_t memory_value = 0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {CMP_ZERO, ZERO_PAGE_ADDR};
@@ -104,7 +104,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CMP_ZERO_ZERO) {
         uint8_t a_value = 0x14;
         uint8_t memory_value = 0x14;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -124,7 +124,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CMP_ZERO_NEGATIVE) {
         uint8_t a_value = 0x14;
         uint8_t memory_value = 0x20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {CMP_ZERO, ZERO_PAGE_ADDR};
@@ -144,7 +144,7 @@ namespace nespp::tests {
         uint8_t a_value = 0x14;
         uint8_t x_value = 0x30;
         uint8_t memory_value = 0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {CMP_ZERO_X, ZERO_PAGE_ADDR};
@@ -166,7 +166,7 @@ namespace nespp::tests {
         uint8_t a_value = 0x14;
         uint8_t x_value = 0xf5;
         uint8_t memory_value = 0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {CMP_ZERO_X, ZERO_PAGE_ADDR};
@@ -188,7 +188,7 @@ namespace nespp::tests {
         uint8_t a_value = 0x14;
         uint8_t x_value = 0x30;
         uint8_t memory_value = 0x14;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -211,7 +211,7 @@ namespace nespp::tests {
         uint8_t a_value = 0x14;
         uint8_t x_value = 0x30;
         uint8_t memory_value = 0x20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {CMP_ZERO_X, ZERO_PAGE_ADDR};
@@ -232,7 +232,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CMP_ABS_CARRY) {
         uint8_t a_value = 0x14;
         uint8_t memory_value = 0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {CMP_ABS, ZERO_PAGE_ADDR};
@@ -251,7 +251,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CMP_ABS_ZERO) {
         uint8_t a_value = 0x14;
         uint8_t memory_value = 0x14;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -271,7 +271,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CMP_ABS_NEGATIVE) {
         uint8_t a_value = 0x14;
         uint8_t memory_value = 0x20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {CMP_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
@@ -291,7 +291,7 @@ namespace nespp::tests {
         uint8_t a_value = 0x14;
         uint8_t memory_value = 0x01;
         uint8_t x_value = 0x30;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {CMP_ABS_X, ZERO_PAGE_ADDR};
@@ -313,7 +313,7 @@ namespace nespp::tests {
         uint8_t a_value = 0x14;
         uint8_t memory_value = 0x14;
         uint8_t x_value = 0x30;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -336,7 +336,7 @@ namespace nespp::tests {
         uint8_t a_value = 0x14;
         uint8_t memory_value = 0x20;
         uint8_t x_value = 0x30;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {CMP_ABS_X, ABS_ADDR_LOW, ABS_ADDR_HIGH};
@@ -358,7 +358,7 @@ namespace nespp::tests {
         uint8_t a_value = 0x14;
         uint8_t memory_value = 0x01;
         uint8_t y_value = 0x30;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {CMP_ABS_Y, ZERO_PAGE_ADDR};
@@ -380,7 +380,7 @@ namespace nespp::tests {
         uint8_t a_value = 0x14;
         uint8_t memory_value = 0x14;
         uint8_t y_value = 0x30;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -403,7 +403,7 @@ namespace nespp::tests {
         uint8_t a_value = 0x14;
         uint8_t memory_value = 0x20;
         uint8_t y_value = 0x30;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {CMP_ABS_Y, ABS_ADDR_LOW, ABS_ADDR_HIGH};
@@ -426,7 +426,7 @@ namespace nespp::tests {
         uint8_t x_value = 0x30;
         uint8_t memory_value = 0x01;
         uint16_t indirect_addr = 0x300;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {CMP_IND_X, ZERO_PAGE_ADDR};
@@ -450,7 +450,7 @@ namespace nespp::tests {
         uint8_t x_value = 0x30;
         uint8_t memory_value = 0x14;
         uint16_t indirect_addr = 0x300;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -475,7 +475,7 @@ namespace nespp::tests {
         uint8_t x_value = 0x30;
         uint8_t memory_value = 0x20;
         uint16_t indirect_addr = 0x300;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {CMP_IND_X, ZERO_PAGE_ADDR};
@@ -499,7 +499,7 @@ namespace nespp::tests {
         uint8_t y_value = 0x30;
         uint8_t memory_value = 0x01;
         uint16_t indirect_addr = 0x300;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {CMP_IND_Y, ZERO_PAGE_ADDR};
@@ -523,7 +523,7 @@ namespace nespp::tests {
         uint8_t y_value = 0x30;
         uint8_t memory_value = 0x14;
         uint16_t indirect_addr = 0x300;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -548,7 +548,7 @@ namespace nespp::tests {
         uint8_t y_value = 0x30;
         uint8_t memory_value = 0x20;
         uint16_t indirect_addr = 0x300;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {CMP_IND_Y, ZERO_PAGE_ADDR};
@@ -570,7 +570,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPX_IMM_CARRY) {
         uint8_t x_value = 0x14;
         uint8_t immediate_value = 0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {CPX_IMM, immediate_value};
@@ -588,7 +588,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPX_IMM_ZERO) {
         uint8_t x_value = 0x14;
         uint8_t immediate_value = 0x14;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -607,7 +607,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPX_IMM_NEGATIVE) {
         uint8_t x_value = 0x14;
         uint8_t immediate_value = 0x20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {CPX_IMM, immediate_value};
@@ -625,7 +625,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPX_ZERO_CARRY) {
         uint8_t x_value = 0x14;
         uint8_t memory_value = 0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {CPX_ZERO, ZERO_PAGE_ADDR};
@@ -644,7 +644,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPX_ZERO_ZERO) {
         uint8_t x_value = 0x14;
         uint8_t memory_value = 0x14;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -664,7 +664,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPX_ZERO_NEGATIVE) {
         uint8_t x_value = 0x14;
         uint8_t memory_value = 0x20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {CPX_ZERO, ZERO_PAGE_ADDR};
@@ -683,7 +683,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPX_ABS_CARRY) {
         uint8_t x_value = 0x14;
         uint8_t memory_value = 0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {CPX_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
@@ -702,7 +702,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPX_ABS_ZERO) {
         uint8_t x_value = 0x14;
         uint8_t memory_value = 0x14;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -722,7 +722,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPX_ABS_NEGATIVE) {
         uint8_t x_value = 0x14;
         uint8_t memory_value = 0x20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {CPX_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
@@ -741,7 +741,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPY_IMM_CARRY) {
         uint8_t y_value = 0x14;
         uint8_t immediate_value = 0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {CPY_IMM, immediate_value};
@@ -759,7 +759,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPY_IMM_ZERO) {
         uint8_t y_value = 0x14;
         uint8_t immediate_value = 0x14;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -778,7 +778,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPY_IMM_NEGATIVE) {
         uint8_t y_value = 0x14;
         uint8_t immediate_value = 0x20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {CPY_IMM, immediate_value};
@@ -796,7 +796,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPY_ZERO_CARRY) {
         uint8_t y_value = 0x14;
         uint8_t memory_value = 0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {CPY_ZERO, ZERO_PAGE_ADDR};
@@ -815,7 +815,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPY_ZERO_ZERO) {
         uint8_t y_value = 0x14;
         uint8_t memory_value = 0x14;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -835,7 +835,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPY_ZERO_NEGATIVE) {
         uint8_t y_value = 0x14;
         uint8_t memory_value = 0x20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {CPY_ZERO, ZERO_PAGE_ADDR};
@@ -854,7 +854,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPY_ABS_CARRY) {
         uint8_t y_value = 0x14;
         uint8_t memory_value = 0x01;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
 
         std::vector<uint8_t> rom = {CPY_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};
@@ -873,7 +873,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPY_ABS_ZERO) {
         uint8_t y_value = 0x14;
         uint8_t memory_value = 0x14;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Carry] = true;
         flags[Flags::Zero] = true;
 
@@ -893,7 +893,7 @@ namespace nespp::tests {
     TEST(StoreOpcodeHandlers, CPY_ABS_NEGATIVE) {
         uint8_t y_value = 0x14;
         uint8_t memory_value = 0x20;
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
         flags[Flags::Negative] = true;
 
         std::vector<uint8_t> rom = {CPY_ABS, ABS_ADDR_LOW, ABS_ADDR_HIGH};

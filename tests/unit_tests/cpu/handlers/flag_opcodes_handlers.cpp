@@ -61,7 +61,7 @@ namespace nespp::tests {
         std::vector<uint8_t> rom = {CLC};
         auto machine = Machine(rom, LOAD_ADDR);
 		auto &ps = machine.get_cpu().get_program_status();
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         machine.get_cpu().get_program_status().set_carry(true);
 
@@ -74,7 +74,7 @@ namespace nespp::tests {
         std::vector<uint8_t> rom = {CLD};
         auto machine = Machine(rom, LOAD_ADDR);
 		auto &ps = machine.get_cpu().get_program_status();
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         machine.get_cpu().get_program_status().set_decimal_mode(true);
 
@@ -87,7 +87,7 @@ namespace nespp::tests {
         std::vector<uint8_t> rom = {CLI};
         auto machine = Machine(rom, LOAD_ADDR);
 		auto &ps = machine.get_cpu().get_program_status();
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x20);
 
         machine.get_cpu().get_program_status().set_interrupt(true);
 
@@ -100,7 +100,7 @@ namespace nespp::tests {
         std::vector<uint8_t> rom = {CLV};
         auto machine = Machine(rom, LOAD_ADDR);
 		auto &ps = machine.get_cpu().get_program_status();
-        auto flags = std::bitset<8>(0);
+        auto flags = std::bitset<8>(0x24);
 
         machine.get_cpu().get_program_status().set_overflow(true);
 
