@@ -15,17 +15,17 @@ namespace nespp::compare_opcodes {
     void cmp_imm(Cpu &cpu);
     void cmp_zero(Cpu &cpu);
     void cmp_zero_x(Cpu &cpu);
-    void cmp_abs(Cpu &cpu);
-    void cmp_abs_x(Cpu &cpu);
-    void cmp_abs_y(Cpu &cpu);
-    void cmp_ind_x(Cpu &cpu);
-    void cmp_ind_y(Cpu &cpu);
-    void cpx_imm(Cpu &cpu);
+    void cmp_absolute(Cpu &cpu);
+    void cmp_absolute_x(Cpu &cpu);
+    void cmp_absolute_y(Cpu &cpu);
+    void cmp_indirect_x(Cpu &cpu);
+    void cmp_indirect_y(Cpu &cpu);
+    void cpx_immediate(Cpu &cpu);
     void cpx_zero(Cpu &cpu);
-    void cpx_abs(Cpu &cpu);
-    void cpy_imm(Cpu &cpu);
+    void cpx_absolute(Cpu &cpu);
+    void cpy_immediate(Cpu &cpu);
     void cpy_zero(Cpu &cpu);
-    void cpy_abs(Cpu &cpu);
+    void cpy_absolute(Cpu &cpu);
 
 }
 

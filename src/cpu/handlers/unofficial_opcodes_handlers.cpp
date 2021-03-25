@@ -1,6 +1,7 @@
 #include "unofficial_opcodes_handlers.h"
 
 namespace nespp::unofficial_opcodes {
+    /*
     std::map<uint8_t, std::function<void(Cpu &)>> get_handlers() {
         auto handlers = std::map<uint8_t, std::function<void(Cpu &)>>();
 
@@ -405,7 +406,7 @@ namespace nespp::unofficial_opcodes {
 
     void arr_immediate(Cpu &cpu) {
         bitwise_opcodes::and_immediate(cpu);
-        bitwise_opcodes::ror_acc(cpu);
+        bitwise_opcodes::ror_accumulator(cpu);
     }
 
     void slo_zero(Cpu &cpu) {
@@ -473,35 +474,35 @@ namespace nespp::unofficial_opcodes {
 
     void rla_absolute(Cpu &cpu) {
         auto pc = cpu.get_program_counter().get_value();
-        bitwise_opcodes::rol_abs(cpu);
+        bitwise_opcodes::rol_absolute(cpu);
         cpu.get_program_counter().set_value(pc);
         bitwise_opcodes::and_absolute(cpu);
     }
 
     void rla_absolute_x(Cpu &cpu) {
         auto pc = cpu.get_program_counter().get_value();
-        bitwise_opcodes::rol_abs_x(cpu);
+        bitwise_opcodes::rol_absolute_x(cpu);
         cpu.get_program_counter().set_value(pc);
         bitwise_opcodes::and_absolute_x(cpu);
     }
 
     void rla_absolute_y(Cpu &cpu) {
         auto pc = cpu.get_program_counter().get_value();
-        bitwise_opcodes::rol_abs_y(cpu);
+        bitwise_opcodes::rol_absolute_y(cpu);
         cpu.get_program_counter().set_value(pc);
         bitwise_opcodes::and_absolute_y(cpu);
     }
 
     void rla_indirect_x(Cpu &cpu) {
         auto pc = cpu.get_program_counter().get_value();
-        bitwise_opcodes::rol_ind_x(cpu);
+        bitwise_opcodes::rol_indirect_x(cpu);
         cpu.get_program_counter().set_value(pc);
         bitwise_opcodes::and_indirect_x(cpu);
     }
 
     void rla_indirect_y(Cpu &cpu) {
         auto pc = cpu.get_program_counter().get_value();
-        bitwise_opcodes::rol_ind_y(cpu);
+        bitwise_opcodes::rol_indirect_y(cpu);
         cpu.get_program_counter().set_value(pc);
         bitwise_opcodes::and_indirect_y(cpu);
     }
@@ -571,14 +572,14 @@ namespace nespp::unofficial_opcodes {
 
     void rra_absolute(Cpu &cpu) {
         auto pc = cpu.get_program_counter().get_value();
-        bitwise_opcodes::ror_abs(cpu);
+        bitwise_opcodes::ror_absolute(cpu);
         cpu.get_program_counter().set_value(pc);
         math_opcodes::adc_absolute(cpu);
     }
 
     void rra_absolute_x(Cpu &cpu) {
         auto pc = cpu.get_program_counter().get_value();
-        bitwise_opcodes::ror_abs_x(cpu);
+        bitwise_opcodes::ror_absolute_x(cpu);
         cpu.get_program_counter().set_value(pc);
         math_opcodes::adc_absolute_x(cpu);
     }
@@ -695,37 +696,37 @@ namespace nespp::unofficial_opcodes {
 
     void dcp_absolute(Cpu &cpu) {
         auto pc = cpu.get_program_counter().get_value();
-        math_opcodes::dec_abs(cpu);
+        math_opcodes::dec_absolute(cpu);
         cpu.get_program_counter().set_value(pc);
-        compare_opcodes::cmp_abs(cpu);
+        compare_opcodes::cmp_absolute(cpu);
     }
 
     void dcp_absolute_x(Cpu &cpu) {
         auto pc = cpu.get_program_counter().get_value();
-        math_opcodes::dec_abs_x(cpu);
+        math_opcodes::dec_absolute_x(cpu);
         cpu.get_program_counter().set_value(pc);
-        compare_opcodes::cmp_abs_x(cpu);
+        compare_opcodes::cmp_absolute_x(cpu);
     }
 
     void dcp_absolute_y(Cpu &cpu) {
         auto pc = cpu.get_program_counter().get_value();
         math_opcodes::dec_abs_y(cpu);
         cpu.get_program_counter().set_value(pc);
-        compare_opcodes::cmp_abs_y(cpu);
+        compare_opcodes::cmp_absolute_y(cpu);
     }
 
     void dcp_indirect_x(Cpu &cpu) {
         auto pc = cpu.get_program_counter().get_value();
         math_opcodes::dec_indirect_x(cpu);
         cpu.get_program_counter().set_value(pc);
-        compare_opcodes::cmp_ind_x(cpu);
+        compare_opcodes::cmp_indirect_x(cpu);
     }
 
     void dcp_indirect_y(Cpu &cpu) {
         auto pc = cpu.get_program_counter().get_value();
         math_opcodes::dec_indirect_y(cpu);
         cpu.get_program_counter().set_value(pc);
-        compare_opcodes::cmp_ind_y(cpu);
+        compare_opcodes::cmp_indirect_y(cpu);
     }
 
     void isc_zero(Cpu &cpu) {
@@ -744,14 +745,14 @@ namespace nespp::unofficial_opcodes {
 
     void isc_absolute(Cpu &cpu) {
         auto pc = cpu.get_program_counter().get_value();
-        math_opcodes::inc_abs(cpu);
+        math_opcodes::inc_absolute(cpu);
         cpu.get_program_counter().set_value(pc);
         math_opcodes::sbc_absolute(cpu);
     }
 
     void isc_absolute_x(Cpu &cpu) {
         auto pc = cpu.get_program_counter().get_value();
-        math_opcodes::inc_abs_x(cpu);
+        math_opcodes::inc_absolute_x(cpu);
         cpu.get_program_counter().set_value(pc);
         math_opcodes::sbc_absolute_x(cpu);
     }

@@ -14,8 +14,8 @@ namespace nespp::math_opcodes {
 
     void dec_zero(Cpu &cpu);
     void dec_zero_x(Cpu &cpu);
-    void dec_abs(Cpu &cpu);
-    void dec_abs_x(Cpu &cpu);
+    void dec_absolute(Cpu &cpu);
+    void dec_absolute_x(Cpu &cpu);
 
     void dec_register(Cpu &cpu, Register<uint8_t> &reg);
 
@@ -26,8 +26,8 @@ namespace nespp::math_opcodes {
 
     void inc_zero(Cpu &cpu);
     void inc_zero_x(Cpu &cpu);
-    void inc_abs(Cpu &cpu);
-    void inc_abs_x(Cpu &cpu);
+    void inc_absolute(Cpu &cpu);
+    void inc_absolute_x(Cpu &cpu);
 
     void inc_register(Cpu &cpu, Register<uint8_t> &reg);
 

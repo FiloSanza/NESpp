@@ -7,15 +7,15 @@ namespace nespp::math_opcodes {
 
         handlers.emplace(Opcodes::DEC_ZERO, dec_zero);
         handlers.emplace(Opcodes::DEC_ZERO_X, dec_zero_x);
-        handlers.emplace(Opcodes::DEC_ABS, dec_abs);
-        handlers.emplace(Opcodes::DEC_ABS_X, dec_abs_x);
+        handlers.emplace(Opcodes::DEC_ABS, dec_absolute);
+        handlers.emplace(Opcodes::DEC_ABS_X, dec_absolute_x);
         handlers.emplace(Opcodes::DEX, dex);
         handlers.emplace(Opcodes::DEY, dey);
 
         handlers.emplace(Opcodes::INC_ZERO, inc_zero);
         handlers.emplace(Opcodes::INC_ZERO_X, inc_zero_x);
-        handlers.emplace(Opcodes::INC_ABS, inc_abs);
-        handlers.emplace(Opcodes::INC_ABS_X, inc_abs_x);
+        handlers.emplace(Opcodes::INC_ABS, inc_absolute);
+        handlers.emplace(Opcodes::INC_ABS_X, inc_absolute_x);
         handlers.emplace(Opcodes::INX, inx);
         handlers.emplace(Opcodes::INY, iny);
 
@@ -60,12 +60,12 @@ namespace nespp::math_opcodes {
         dec_memory(cpu, address);
     }
 
-    void dec_abs(Cpu &cpu) {
+    void dec_absolute(Cpu &cpu) {
         auto address = cpu.get_u16();
         dec_memory(cpu, address);
     }
 
-    void dec_abs_x(Cpu &cpu) {
+    void dec_absolute_x(Cpu &cpu) {
         auto address = cpu.get_absolute_x_address();
         dec_memory(cpu, address);
     }
@@ -106,12 +106,12 @@ namespace nespp::math_opcodes {
         inc_memory(cpu, address);
     }
 
-    void inc_abs(Cpu &cpu) {
+    void inc_absolute(Cpu &cpu) {
         auto address = cpu.get_u16();
         inc_memory(cpu, address);
     }
 
-    void inc_abs_x(Cpu &cpu) {
+    void inc_absolute_x(Cpu &cpu) {
         auto address = cpu.get_absolute_x_address();
         inc_memory(cpu, address);
     }

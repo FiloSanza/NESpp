@@ -18,6 +18,7 @@
 #include "system_opcode_handlers.h"
 
 namespace nespp::unofficial_opcodes {
+    /*
     std::map<uint8_t, std::function<void(Cpu &)>> get_handlers();
 
     void kil(Cpu &cpu);
@@ -106,7 +107,7 @@ namespace nespp::unofficial_opcodes {
 
     void shy_absolute_x(Cpu &cpu);
     void shx_absolute_y(Cpu &cpu);
-
+*/
 }
 
 #endif //NESPP_UNOFFICIAL_OPCODES_HANDLERS_H

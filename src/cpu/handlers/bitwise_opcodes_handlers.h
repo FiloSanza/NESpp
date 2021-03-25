@@ -39,23 +39,23 @@ namespace nespp::bitwise_opcodes {
     void rol(Cpu &cpu, Register<uint8_t> &reg);
     void rol(Cpu &cpu, uint16_t address);
 
-    void rol_acc(Cpu &cpu);
+    void rol_accumulator(Cpu &cpu);
     void rol_zero(Cpu &cpu);
     void rol_zero_x(Cpu &cpu);
-    void rol_abs(Cpu &cpu);
-    void rol_abs_x(Cpu &cpu);
-    void rol_abs_y(Cpu &cpu);
-    void rol_ind_x(Cpu &cpu);
-    void rol_ind_y(Cpu &cpu);
+    void rol_absolute(Cpu &cpu);
+    void rol_absolute_x(Cpu &cpu);
+    void rol_absolute_y(Cpu &cpu);
+    void rol_indirect_x(Cpu &cpu);
+    void rol_indirect_y(Cpu &cpu);
 
     void ror(Cpu &cpu, Register<uint8_t> &reg);
     void ror(Cpu &cpu, uint16_t address);
 
-    void ror_acc(Cpu &cpu);
+    void ror_accumulator(Cpu &cpu);
     void ror_zero(Cpu &cpu);
     void ror_zero_x(Cpu &cpu);
-    void ror_abs(Cpu &cpu);
-    void ror_abs_x(Cpu &cpu);
+    void ror_absolute(Cpu &cpu);
+    void ror_absolute_x(Cpu &cpu);
 
     void bit(Cpu &cpu, uint8_t value);
 

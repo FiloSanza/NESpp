@@ -32,17 +32,17 @@ namespace nespp::bitwise_opcodes {
         handlers.emplace(Opcodes::ORA_IND_X, ora_indirect_x);
         handlers.emplace(Opcodes::ORA_IND_Y, ora_indirect_y);
 
-        handlers.emplace(Opcodes::ROL_ACC, rol_acc);
+        handlers.emplace(Opcodes::ROL_ACC, rol_accumulator);
         handlers.emplace(Opcodes::ROL_ZERO, rol_zero);
         handlers.emplace(Opcodes::ROL_ZERO_X, rol_zero_x);
-        handlers.emplace(Opcodes::ROL_ABS, rol_abs);
-        handlers.emplace(Opcodes::ROL_ABS_X, rol_abs_x);
+        handlers.emplace(Opcodes::ROL_ABS, rol_absolute);
+        handlers.emplace(Opcodes::ROL_ABS_X, rol_absolute_x);
 
-        handlers.emplace(Opcodes::ROR_ACC, ror_acc);
+        handlers.emplace(Opcodes::ROR_ACC, ror_accumulator);
         handlers.emplace(Opcodes::ROR_ZERO, ror_zero);
         handlers.emplace(Opcodes::ROR_ZERO_X, ror_zero_x);
-        handlers.emplace(Opcodes::ROR_ABS, ror_abs);
-        handlers.emplace(Opcodes::ROR_ABS_X, ror_abs_x);
+        handlers.emplace(Opcodes::ROR_ABS, ror_absolute);
+        handlers.emplace(Opcodes::ROR_ABS_X, ror_absolute_x);
 
         handlers.emplace(Opcodes::BIT_ABS, bit_absolute);
         handlers.emplace(Opcodes::BIT_ZERO, bit_zero);
@@ -237,7 +237,7 @@ namespace nespp::bitwise_opcodes {
         cpu.get_program_status().set_negative(bits::get_nth_bit(value, 7));
     }
 
-    void rol_acc(Cpu &cpu) {
+    void rol_accumulator(Cpu &cpu) {
         rol(cpu, cpu.get_a());
     }
 
@@ -251,27 +251,27 @@ namespace nespp::bitwise_opcodes {
         rol(cpu, address);
     }
 
-    void rol_abs(Cpu &cpu) {
+    void rol_absolute(Cpu &cpu) {
         auto address = cpu.get_u16();
         rol(cpu, address);
     }
 
-    void rol_abs_x(Cpu &cpu) {
+    void rol_absolute_x(Cpu &cpu) {
         auto address = cpu.get_absolute_x_address();
         rol(cpu, address);
     }
 
-    void rol_abs_y(Cpu &cpu) {
+    void rol_absolute_y(Cpu &cpu) {
         auto address = cpu.get_absolute_y_address();
         rol(cpu, address);
     }
 
-    void rol_ind_x(Cpu &cpu) {
+    void rol_indirect_x(Cpu &cpu) {
         auto address = cpu.get_indirect_x_address();
         rol(cpu, address);
     }
 
-    void rol_ind_y(Cpu &cpu) {
+    void rol_indirect_y(Cpu &cpu) {
         auto address = cpu.get_indirect_y_address();
         rol(cpu, address);
     }
@@ -306,7 +306,7 @@ namespace nespp::bitwise_opcodes {
         cpu.get_program_status().set_negative(bits::get_nth_bit(value, 7));
     }
 
-    void ror_acc(Cpu &cpu) {
+    void ror_accumulator(Cpu &cpu) {
         ror(cpu, cpu.get_a());
     }
 
@@ -320,12 +320,12 @@ namespace nespp::bitwise_opcodes {
         ror(cpu, address);
     }
 
-    void ror_abs(Cpu &cpu) {
+    void ror_absolute(Cpu &cpu) {
         auto address = cpu.get_u16();
         ror(cpu, address);
     }
 
-    void ror_abs_x(Cpu &cpu) {
+    void ror_absolute_x(Cpu &cpu) {
         auto address = cpu.get_absolute_x_address();
         ror(cpu, address);
     }
